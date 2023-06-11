@@ -123,31 +123,31 @@
 123,epistle,epistula,"(n) written communication",épître,epístola,epistola
 124,equestrian,equester,"(adj) belonging to a horseman",équestre,ecuestre,equestre
 125,equine,equus,"(n) horse",équin,equino,equino
-126,error,errare,"defn",fr,es,it
-127,evade,evadere,"defn",fr,es,it
-128,evoke,evocare,"defn",fr,es,it
-129,excite,excitare,"defn",fr,es,it
-130,expect,expectare,"defn",fr,es,it
-131,expire,expirare,"defn",fr,es,it
-132,explore,explorare,"defn",fr,es,it
-133,extra,extra,"defn",fr,es,it
-134,facility,facilis,"defn",fr,es,it
-135,fact,factum,"defn",fr,es,it
-136,fame,fama,"defn",fr,es,it
-137,felicity,felicitas,"defn",fr,es,it
-138,feline,felinus,"defn",fr,es,it
-139,feminine,femininus,"defn",fr,es,it
-140,ferocious,ferox,"defn",fr,es,it
-141,fidelity,fidelitas,"defn",fr,es,it
-142,fierce,ferus,"defn",fr,es,it
-143,figure,figura,"defn",fr,es,it
-144,filial,filius,"defn",fr,es,it
-145,finish,finis,"defn",fr,es,it
-146,firm,firmus,"defn",fr,es,it
-147,flame,flamma,"defn",fr,es,it
-148,fluent,fluens,"defn",fr,es,it
-149,focus,focus,"defn",fr,es,it
-150,fortify,fortis,"defn",fr,es,it
+126,error,erratum,"(n) a mistake",erreur,error,errore
+127,evade,evadere,"(v) avoid, escape",évader,evadir,evadere
+128,evoke,evocare,"(v) to summon",évoquer,evocar,evocare
+129,excite,excitare,"(v) cause, incite or arouse",exciter,excitar,eccitare
+130,expect,expectare,"(v) look out for, anticipate",espérer,esperar,aspettarsi
+131,expire,expirare,"(v) breathe out",expirer,espirar,espirare
+132,explore,explorare,"(v) search out, investigate",explorer,explorar,esplorare
+133,extra,extra,"(adv) outside",extra,extra,extra
+134,facility,facilis,"(adj) easy",facilité,facilidad,facilità
+135,fact,factum,"(n) act, deed or truth",fait,hecho,fatto
+136,fame,fama,"(n) reputation",famé,fama,fama
+137,felicity,felicitas,"(n) happiness",félicité,felicidad,felicità
+138,feline,felis,"(n) cat",félin,felino,felino
+139,feminine,femininus,"(adj) relating to women",féminin,femenino,femminile
+140,ferocious,ferox,"(adj) cruel, wild",féroce,feroz,feroce
+141,fidelity,fidelitas,"(n) faithfulness",fidélité,fidelidad,fedeltà
+142,fierce,ferus,"(adj) untamed",fier,fiero,fiero
+143,figure,figura,"(n) shape or form",figure,figura,figura
+144,filial,filius filia,"(n) son, daughter",filial,filial,filiale
+145,finish,finis,"(n) the end",fin,fin,fine
+146,firm,firmus,"(adj) solid, strong, enduring",ferme,firme,fermo
+147,flame,flamma,"(n) fire, ardor",flamme,llama,fiamma
+148,fluent,fluentus,"(adj) flowing unrestrained",fluide,fluido,fluido
+149,focus,focus,"(n) hearth, stove",foyer,foco,fuoco
+150,force,fortis,"(adj) strong",force,fuerza,forza
 151,fraternity,fraternitas,"defn",fr,es,it
 152,frustrate,frustratus,"defn",fr,es,it
 153,fugitive,fugitivus,"defn",fr,es,it
