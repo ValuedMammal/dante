@@ -1,16 +1,20 @@
-# Alejandro
+# Dante
 
 ## proof of concept  
 stuck between calling it Dante or Alejandro. either is fine  
-general api: make a service for users to query an english word for latin origin  
+general api: make a service for users to query an english word for its latin origin  
 
-should include a method for searching a dictionary of eng/latin words (look at DeepL API) and adding it to our db
-if it's not there already
+looks like DeepL doesn't have latin dict
 
-can be used as a template for other use case: auto respond to messages that meet some criteria e.g. spammy election texts  
+add a prompting interface + LLM  
 
-game-like design: one main loop with various subroutines that only go "one level deep," so easy to reason about. /start /query /more /stop  
-see [fCC py tutorial](https://www.freecodecamp.org/news/how-to-create-a-telegram-bot-using-python/)
+first 350 words is minimally viable. obviously there is potentially many more.
+
+related use case: read iMessage db and auto respond to messages that meet some criteria e.g. spammy election texts. implement a lightning invoice fetcher
+
+game-like design: one main loop with various subroutines that only go "one level deep," so easy to reason about. see [fCC py tutorial](https://www.freecodecamp.org/news/how-to-create-a-telegram-bot-using-python/). see also: finite state machine
+
+possible implementations: python/sqlite, py/postgres, rust/postgres
 
 share with language teachers/learners - davide, elissa, polymathy, nacho  
 
@@ -18,8 +22,23 @@ Note: before copying py script to ~/Library/Messages we'll need to substitute th
 
 want a way to programatically add rows to the db. this may prove more complicated than simply getting translations due to "semantic drift"
 
-still marinating on this
-add verbiage to Dante help: "modern equiv aims to capture lexical forms that most closely resemble their latin origin"
+### Dictionary approach:
+
+- Unique constraint on the english word, as this is the primary search term
+- From Dante help: "modern equivalents aim to capture lexical forms that most closely resemble their latin origin, but because the meaning of words drifts over time, may not track semantically, or are seldom used"  
+- For latin roots: generally try to match the grammar of the english term. in cases of ambiguity, go with what feels familiar, or where better translations exist
+    - prefer verbs over adjectives. prefer noun when it can be clearly deduced by the etymology 
+    - e.g. aquatic, from the latin: aqua, (n) water
+    - ok to include two terms in a column (fr, es, it) separated by a space
+- Adjectives: gender normally follows masculine or neuter -  for no reason other than laziness or consistency
+
+### 11Jun 2023  
+
+### 10Jun 2023  
+- rust: I had trouble connecting existing bot through teloxide, but creating a new bot worked fine
+- alejandro rust bot. tested requst/response
+- tested sql query (remember start/stop postgres)
+- try impl deepl api
 
 ### 9Jun 2023  
 - hooked up DeepL api and implemented the translate command in telegram, so Dante can now translate using deepl
@@ -44,11 +63,14 @@ in a text. (streamline this step?)
 - wrote some in rust - send repeat text
 - in python, impld lookup latin words  
     - reponds with translations
-    - started english/latin word list, csv ~375 words, rand source proofreadingservices.com
+    - started english/latin word list, csv ~375 words, took it from a random source proofreadingservices.com because it was already in an html table
     - need to write defns, translations (fr, en, it), then write csv to table 'latin' in chat.db
 
-### can be added to word list
-annul
-nuptial
-nubile
-decadent
+### Can be added to dict
+annul  
+nuptial  
+nubile  
+decadent  
+assiduous  
+dubious  
+reputation repute  
