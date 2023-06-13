@@ -18,8 +18,6 @@ possible implementations: python/sqlite, py/postgres, rust/postgres
 
 share with language teachers/learners - davide, elissa, polymathy, nacho  
 
-Note: before copying py script to ~/Library/Messages we'll need to substitute the correct sql query and add tables to chat.db schema
-
 want a way to programatically add rows to the db. this may prove more complicated than simply getting translations due to "semantic drift"
 
 ### Dictionary approach:
@@ -32,7 +30,20 @@ want a way to programatically add rows to the db. this may prove more complicate
     - ok to include two terms in a column (fr, es, it) separated by a space
 - Adjectives: gender normally follows masculine or neuter -  for no reason other than laziness or consistency
 
+### 12Jun 2023  
+- impl deepl translate first attempt github.com/mgruner/deepl-api-rs/
+    - 'tokio-runtime-worker' panicked at 'Cannot drop a runtime in a context where blocking is not allowed.
+    - i guess because this crate is not async
+    - or we need a synchronous tg bot handler
+- finally got a prototype up for Alejandro 
+    - teloxide + sqlx Postgres
+    - github.com/Avimitin/deepl-rs
+- py: consider option to allow db query by column
+- consider suggest (you might be interested in...) if first db query returns no rows 
+
 ### 11Jun 2023  
+- for sqlite i used double quotes in definition column so we could include commas, however postgres doesn't like this when we try to `\copy` table from csv. instead, we use semicolon ; as a delimiter to allow use of comma inside a definition.
+- work on deepl-rust api
 
 ### 10Jun 2023  
 - rust: I had trouble connecting existing bot through teloxide, but creating a new bot worked fine
@@ -74,3 +85,4 @@ decadent
 assiduous  
 dubious  
 reputation repute  
+grace  

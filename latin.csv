@@ -1,4 +1,4 @@
-1,absent,absens,(adj) not present,absent,ausente,assente
+1,absent,absens,"(adj) not present",absent,ausente,assente
 2,accelerate,accelerare,"(v) speed up, quicken",accélérer,acelerar,accelerare
 3,accept,acceptare,(v) consent to receive a thing offered,accepter,aceptar,accettare
 4,acceptable,acceptabilis,(adj) able to be agreed on,acceptable,aceptable,accettabile
@@ -28,7 +28,7 @@
 28,aperture,apertura,(n) an opening,ouverture,apertura,apertura
 29,appeal,appellare,"(v) address, call upon or solicit","faire appel",apelar,appellar(si)
 30,appear,apparere,(v) come into view,apparaître,aparecer,apparire
-31,aquatic,aquaticus,(adj) pertaining to water,aquatique,acuático,acquatico
+31,aquatic,aqua,(n) water,aquatique,acuático,acquatico
 32,aquiline,aquila,(n) eagle,aquilin,aguileño,aquilino
 33,arable,arare,"(v) to plow; till",arable,arable,arabile
 34,arboreal,arbor,(n) tree,arboricole,arbóreo,arboreo
@@ -96,7 +96,7 @@
 96,desire,desiderare,"(v) a strong want",désirer,desear,desiderare
 97,despair,desperare,"(v) lose hope",désespérer,desesperar,disperare
 98,desperate,desperatus,"(adj) deprived of hope",désespéré,desesperado,disperato
-99,dexterous,dexter"(adj) on the right; favorable",adroit,diestro,destro
+99,dexterous,dexter,"(adj) on the right; favorable",adroit,diestro,destro
 100,dictate,dictare,"(v) say, recite, declare",dicter,dictar,dettare
 101,dictionary,dictionarius,"(n) book of words",dictionnaire,diccionario,dizionario
 102,difficult,difficilis,"(adj) hard, laborious",difficile,difícil,difficile
@@ -148,31 +148,32 @@
 148,fluent,fluentus,"(adj) flowing unrestrained",fluide,fluido,fluido
 149,focus,focus,"(n) hearth, stove",foyer,foco,fuoco
 150,force,fortis,"(adj) strong",force,fuerza,forza
-151,fraternity,fraternitas,"defn",fr,es,it
-152,frustrate,frustratus,"defn",fr,es,it
-153,fugitive,fugitivus,"defn",fr,es,it
-154,fume,fumus,"defn",fr,es,it
-155,gem,gemma,"defn",fr,es,it
-156,generate,generatus,"defn",fr,es,it
-157,genus,genus,"defn",fr,es,it
-158,gladiator,gladius,"defn",fr,es,it
-159,grateful,gratus,"defn",fr,es,it
-160,gravity,gravitas,"defn",fr,es,it
-161,gusto,gustus,"defn",fr,es,it
-162,habit,habitus,"defn",fr,es,it
-163,habitat,habitat,"defn",fr,es,it
-164,herb,herba,"defn",fr,es,it
-165,horticulture,hortus,"defn",fr,es,it
-166,hostile,hostilis,"defn",fr,es,it
-167,hour,hora,"defn",fr,es,it
-168,ignite,ignitus,"defn",fr,es,it
-169,illuminate,illuminatus,"defn",fr,es,it
-170,imperial,imperialis,"defn",fr,es,it
-171,in,in,"defn",fr,es,it
-172,incantation,incantare,"defn",fr,es,it
-173,inception,inceptio,"defn",fr,es,it
-174,inevitable,inevitabilis,"defn",fr,es,it
-175,initial,initialis,"defn",fr,es,it
+151,fraternity,fraternitas,"(n) brotherhood",fraternité,fraternidad,fraternità
+152,frustrate,frustrare,"(v) elude, disappoint",frustrer,frustrar,frustrare
+153,fugitive,fugitivus,"(n) deserter, runaway",fugitif,fugitivo,fuggitivo
+154,fume,fumus,"(n) smoke or vapor",fumée,humo,fumo
+155,gem,gemma,"(n) jewel, bud",gemme,gema,gemma
+156,generate,generare,"(v) produce, beget",générer,generar,generare
+157,genus,genus,"(n) race, stock",genre,genero,genere
+158,gladiator,gladius,"(n) sword",gladiateur,gladiador,gladiatore
+159,gratitude,gratia,"(n) goodwill, thanks",gratitude,gratitud,gratitudine
+159,grace,gratia,"(n) goodwill, thanks",grâce,gracia,grazia
+160,gravity,gravitas,"(n) weight",gravité,gravedad,gravità
+161,gusto,gustus,"(n) taste",goût,gusto,gusto
+162,habit,habitus,"(n) character or condition",habitude,hábito,abito abitudine
+163,habitat,habitare,"(v) live in, dwell",habitat,hábitat habitación,habitat
+164,herb,herba,"(n) grass, crop",herbe,hierba,erba
+165,horticulture,hortus,"(n) garden",horticulture,horticultura,orticultura
+166,hostile,hostilis,"(adj) of an enemy",hostile,hostil,ostile
+167,hour,hora,"(n) 60 minutes; season",heure,hora,ora
+168,ignite,ignire,"(v) make intensely hot",enflammer,inflamar,infiammare
+169,illuminate,illuminare,"(v) light upon",illuminer,iluminar,illuminare
+170,imperial,imperium,"(n) command, empire",impérial,imperial,imperiale
+171,in,in,"(p) enclosed or surrounded with",en dans,en,in
+172,incantation,incantare,"(v) enchant",incantation,encanto,incanto incantesimo
+173,inception,incipere,"(v) begin",commencement début,inicio principio,inizio principio
+174,inevitable,inevitabilis,"(adj) unavoidable",inévitable,inevitable,inevitabile
+175,initial,initium,"(n) beginning",initial,inicial,iniziale
 176,inquire,inquirere,"defn",fr,es,it
 177,insidious,insidiosus,"defn",fr,es,it
 178,insomnia,insomnis,"defn",fr,es,it
