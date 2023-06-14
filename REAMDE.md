@@ -1,6 +1,7 @@
 # Dante
+A romance language companion
 
-## proof of concept  
+### Concept  
 stuck between calling it Dante or Alejandro. either is fine  
 general api: make a service for users to query an english word for its latin origin  
 
@@ -21,7 +22,6 @@ share with language teachers/learners - davide, elissa, polymathy, nacho
 want a way to programatically add rows to the db. this may prove more complicated than simply getting translations due to "semantic drift"
 
 ### Dictionary approach:
-
 - Unique constraint on the english word, as this is the primary search term
 - From Dante help: "modern equivalents aim to capture lexical forms that most closely resemble their latin origin, but because the meaning of words drifts over time, may not track semantically, or are seldom used"  
 - For latin roots: generally try to match the grammar of the english term. in cases of ambiguity, go with what feels familiar, or where better translations exist
@@ -29,6 +29,18 @@ want a way to programatically add rows to the db. this may prove more complicate
     - e.g. aquatic, from the latin: aqua, (n) water
     - ok to include two terms in a column (fr, es, it) separated by a space
 - Adjectives: gender normally follows masculine or neuter -  for no reason other than laziness or consistency
+
+### Dev log:
+-------
+### 14Jun 2023  
+-  rewrote trans-csv using regex
+    - fixed typos in latin.csv
+    - re-ran both scripts and diff'ed the outputs. identical result
+    -  tested \copy to postgres, syntax: `\copy latin from pglatin.csv with delimiter ';'` ( `;` to commit)
+
+### 13Jun 2023  
+- py script for populating rows in postgres csv (~375 rows)  
+- rust: lots of debugging. Alejandro can /help, /query, /trans, /usage
 
 ### 12Jun 2023  
 - impl deepl translate first attempt github.com/mgruner/deepl-api-rs/
@@ -86,3 +98,13 @@ assiduous
 dubious  
 reputation repute  
 grace  
+disaster - 'ill-starred event'  
+none/null  
+travail - 'three stakes'  
+laudable  
+enthusiasm  
+gentile  
+liberty  
+clairty  
+magnanimous  
+majority  

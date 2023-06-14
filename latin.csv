@@ -1,42 +1,42 @@
 1,absent,absens,"(adj) not present",absent,ausente,assente
 2,accelerate,accelerare,"(v) speed up, quicken",accélérer,acelerar,accelerare
-3,accept,acceptare,(v) consent to receive a thing offered,accepter,aceptar,accettare
-4,acceptable,acceptabilis,(adj) able to be agreed on,acceptable,aceptable,accettabile
-5,acervate,acervus,(n) a dense heap or mass,unknown,acervo,acervo
+3,accept,acceptare,"(v) consent to receive a thing offered",accepter,aceptar,accettare
+4,acceptable,acceptabilis,"(adj) able to be agreed on",acceptable,aceptable,accettabile
+5,acervate,acervus,"(n) a dense heap or mass",unknown,acervo,acervo
 6,acid,acidus,"(adj) having properties of an acid, sour or sharp-tasting",acide,ácido,acido
 7,acrid,acris,"(adj) sharp, pungent",âcre,acre,acre
-8,adorn,adornare,(v) make beautiful and attractive; decorate or embellish,orner,adornar,adornare
-9,agrarian,agrarius,(adj) relating to cultivated land,agraire,agrario,agrario
-10,agriculture,agricultura,(n) the science or practice of farming,agriculture,agricultura,agricoltura
-11,alate,alatus,(adj) winged,ailé,alado,alato
-12,albino,albus,"(adj) white, pale; bright, clear; bright",albino,albino,albino
-13,albumen,albus,"(n) white, pale; bright, clear",albumen,albumen,albume
+8,adorn,adornare,"(v) make beautiful, embellish",orner,adornar,adornare
+9,agrarian,agrarius,"(adj) relating to cultivated land",agraire,agrario,agrario
+10,agriculture,agricultura,"(n) the science or practice of farming",agriculture,agricultura,agricoltura
+11,alate,alatus,"(adj) winged",ailé,alado,alato
+12,albino,albus,"(adj) white, pale, clear",albino,albino,albino
+13,albumen,albus,"(n) white, pale, clear",albumen,albumen,albume
 14,alter,alter,"(adj) either, other",autre,otro,altro
-15,altitude,altitudo,(n) height or elevation,altitude,altitud,altitudine
+15,altitude,altitudo,"(n) height or elevation",altitude,altitud,altitudine
 16,amatory,amatorius,"(adj) relating to love or desire, amorous",amoureax,apasionado,amoroso
-17,amble,ambulare,(v) move about at a relaxed pace,promener,pasear,passeggiare
-18,ambulatory,ambulatorius,(adj) mobile or adapted for walking,ambulatoire,ambulante,ambulante
+17,amble,ambulare,"(v) move about at a relaxed pace",promener,pasear,passeggiare
+18,ambulatory,ambulatorius,"(adj) mobile or adapted for walking",ambulatoire,ambulante,ambulante
 19,amiable,amicus,"(adj) friendly, loving, kind",aimable,amable,amabile
 20,amicable,amicabilis,"(adj) friendly, cordial",amical,amigable,amichevole
 21,amity,amicitia,"(n) friendship, alliance",concorde,amistad,amicizia
-22,ancient,ante,(adj) before,ancien,"ante, antiguo",antico
+22,ancient,ante,"(adj) before",ancien,ante antiguo,antico
 23,animal,animal,"(n) living thing, creature",animal,animal,animale
-24,announce,annuntiare,(v) to say or make known,annoncer,anunciar,annunciare
-25,annual,annus,(n) one year,an,año,anno
-26,antecedent,antecedens,(adj) going before,antécédent,antecedente,antecedente
+24,announce,annuntiare,"(v) to say or make known",annoncer,anunciar,annunciare
+25,annual,annus,"(n) one year",an,año,anno
+26,antecedent,antecedens,"(adj) going before",antécédent,antecedente,antecedente
 27,antique,antiquus,"(adj) former, ancient",antique,antiguo,antico
-28,aperture,apertura,(n) an opening,ouverture,apertura,apertura
-29,appeal,appellare,"(v) address, call upon or solicit","faire appel",apelar,appellar(si)
-30,appear,apparere,(v) come into view,apparaître,aparecer,apparire
-31,aquatic,aqua,(n) water,aquatique,acuático,acquatico
-32,aquiline,aquila,(n) eagle,aquilin,aguileño,aquilino
+28,aperture,apertura,"(n) an opening",ouverture,apertura,apertura
+29,appeal,appellare,"(v) address, call upon or solicit",faire appel,apelar,appellar(si)
+30,appear,apparere,"(v) come into view",apparaître,aparecer,apparire
+31,aquatic,aqua,"(n) water",aquatique,acuático,acquatico
+32,aquiline,aquila,"(n) eagle",aquilin,aguileño,aquilino
 33,arable,arare,"(v) to plow; till",arable,arable,arabile
-34,arboreal,arbor,(n) tree,arboricole,arbóreo,arboreo
+34,arboreal,arbor,"(n) tree",arboricole,arbóreo,arboreo
 35,ardent,ardens,"(adj) burning; eager, passionate",ardent,ardiente,ardente
-36,arson,ardere,(v) to burn,incendie,incendio,incendio
+36,arson,ardere,"(v) to burn",incendie,incendio,incendio
 37,associate,associare,"(v) join, link or ally with",associer,asociar,associare
 38,audacious,audacia,"(adj) boldness, courage",audacieux,audaz,audace
-39,audition,auditio,"(n) act/sense of hearing",audition,audición,audizione
+39,audition,auditio,"(n) act or sense of hearing",audition,audición,audizione
 40,auditorium,auditorium,"(n) theater; lecture room",auditorium,auditorio,auditorio
 41,auditory,auditorius,"(adj) relating to hearing",auditif,auditivo,uditivo
 42,augment,augere,"(v) to increase",augmenter,aumentar,aumentare
@@ -55,7 +55,7 @@
 55,brevity,brevitas,"(n) shortness, conciseness",brièveté,brevità,brevedad
 56,campus,campus,"(n) flat, open place or field",campus,campus,campus
 57,candid,candidus,"(adj) white, clear or pure ",candide,cándido,candido
-58,candidate,candidatus,"(adj/n) white-robed",candidat,candidato,candidato
+58,candidate,candidatus,"(adj) white-robed",candidat,candidato,candidato
 59,canine,canis,"(n) dog",canin,canino,canino
 60,celerity,celeritas,"(n) swiftness of speed",célérité,celeridad,celerità
 61,celestial,caelestis,"(adj) pertaining to the heavens",céleste,celestial,celestiale
@@ -157,7 +157,6 @@
 157,genus,genus,"(n) race, stock",genre,genero,genere
 158,gladiator,gladius,"(n) sword",gladiateur,gladiador,gladiatore
 159,gratitude,gratia,"(n) goodwill, thanks",gratitude,gratitud,gratitudine
-159,grace,gratia,"(n) goodwill, thanks",grâce,gracia,grazia
 160,gravity,gravitas,"(n) weight",gravité,gravedad,gravità
 161,gusto,gustus,"(n) taste",goût,gusto,gusto
 162,habit,habitus,"(n) character or condition",habitude,hábito,abito abitudine
@@ -165,7 +164,7 @@
 164,herb,herba,"(n) grass, crop",herbe,hierba,erba
 165,horticulture,hortus,"(n) garden",horticulture,horticultura,orticultura
 166,hostile,hostilis,"(adj) of an enemy",hostile,hostil,ostile
-167,hour,hora,"(n) 60 minutes; season",heure,hora,ora
+167,hour,hora,"(n) sixty minutes; season",heure,hora,ora
 168,ignite,ignire,"(v) make intensely hot",enflammer,inflamar,infiammare
 169,illuminate,illuminare,"(v) light upon",illuminer,iluminar,illuminare
 170,imperial,imperium,"(n) command, empire",impérial,imperial,imperiale
@@ -174,32 +173,32 @@
 173,inception,incipere,"(v) begin",commencement début,inicio principio,inizio principio
 174,inevitable,inevitabilis,"(adj) unavoidable",inévitable,inevitable,inevitabile
 175,initial,initium,"(n) beginning",initial,inicial,iniziale
-176,inquire,inquirere,"defn",fr,es,it
-177,insidious,insidiosus,"defn",fr,es,it
-178,insomnia,insomnis,"defn",fr,es,it
-179,invade,invadere,"defn",fr,es,it
-180,invent,inventus,"defn",fr,es,it
-181,invincible,invincibilis,"defn",fr,es,it
-182,judicial,judicialis,"defn",fr,es,it
-183,just,justus,"defn",fr,es,it
-184,juvenile,juvenilis,"defn",fr,es,it
-185,labor,labor,"defn",fr,es,it
-186,language,lingua,"defn",fr,es,it
-187,latitude,latitudo,"defn",fr,es,it
-188,laureate,laureatus,"defn",fr,es,it
-189,legacy,legatus,"defn",fr,es,it
-190,legal,legalis,"defn",fr,es,it
-191,liberal,liberalis,"defn",fr,es,it
-192,library,librarium,"defn",fr,es,it
-193,longitude,longitudo,"defn",fr,es,it
-194,lucid,lucidus,"defn",fr,es,it
-195,lunar,lunaris,"defn",fr,es,it
-196,magic,magice,"defn",fr,es,it
-197,magistrate,magistratus,"defn",fr,es,it
-198,magnify,magnificare,"defn",fr,es,it
-199,major,major,"defn",fr,es,it
-200,malevolent,malevolens,"defn",fr,es,it
-201,manufacture,manu factus"defn",fr,es,it,
+176,inquire,inquirere,"(v) investigate",enquérir,inquirir,chiedere
+177,insidious,insidere,"(v) lie in wait for",insidieux,insidioso,insidioso
+178,insomnia,insomnis,"(adj) sleepless",insomnie,insomnio,insonnia
+179,invade,invadere,"(v) go into, attack",envahir,invadir,invadere
+180,invent,invenire,"(v) come upon or discover",inventer,inventar,inventare
+181,invincible,invincibilis,"(adj) can not be defeated",invincible,invencible,invincibile
+182,judicial,judicium,"(n) judgment, verdict",judiciaire,judicial,giudiziario
+183,just,justus,"(adj) fair, equitable",juste,justo,giusto
+184,juvenile,juvenis,"(n) a young person",jeune,juvenil,giovane
+185,labor,labor,"(n) toil",labeur,labor,labore
+186,language,lingua,"(n) tongue, dialect",langue,lengua,lingua
+187,latitude,latitudo,"(n) breadth",latitude,latitud,latitudine
+188,laureate,laurus,"(n) laurel, bay tree",lauréat,laureado,laureato
+189,legacy,legatus,"(n) one delegated",legs,legado,legato
+190,legal,lex legis,"(n) a law",légal,legal,legale
+191,liberal,liberalis,"(adj) free or generous",libéral,liberal,liberale
+192,library,librarium,"(n) bookcase or store",librairie,librería,libreria
+193,longitude,longitudo,"(n) length",longitude,longitud,longitudine
+194,lucid,lux lucis,"(n) light, day",lucide,lúcido,lucido
+195,lunar,luna,"(n) moon",lunaire,lunar,lunare
+196,magic,magia,"(n) art, trick, sorcery",magie,magia,magia
+197,magistrate,magister,"(n) master or administrator",magistrat,magistrado,magistrato
+198,magnify,magnificare,"(v) extol, make great",magnifier,magnificar,magnificare
+199,major,major,"(n) adult, ancestor",majeur,mayor,maggiore
+200,malevolent,malevolens,"(adj) wishing ill",malveillant,malévolo,malevolo
+201,manufacture,manu factus,"defn",fr,es,it
 202,marine,marinus,"defn",fr,es,it
 203,maternal,maternus,"defn",fr,es,it
 204,me,me,"defn",fr,es,it
@@ -235,7 +234,7 @@
 234,nocturnal,nocturnus,"defn",fr,es,it
 235,nominal,nominalis,"defn",fr,es,it
 236,nominate,nominatus,"defn",fr,es,it
-237,note,notenota,nota"defn",fr,es,it
+237,note,nota,"defn",fr,es,it
 238,number,numerus,"defn",fr,es,it
 239,numeral,numerus,"defn",fr,es,it
 240,obscure,obscurus,"defn",fr,es,it
@@ -372,3 +371,5 @@
 371,vocation,vocatio,"defn",fr,es,it
 372,voice,vox,"defn",fr,es,it
 373,vulnerable,vulnerare,"defn",fr,es,it
+374,justice,justitia jus,"(n) law or right",justice,justicia,giustizia
+375,grace,gratia,"(n) goodwill, thanks",grâce,gracia,grazia
