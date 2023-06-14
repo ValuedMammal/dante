@@ -3,6 +3,9 @@ use sqlx::postgres::{PgPool, PgPoolOptions};
 use std::collections::HashMap;
 use std::sync::Arc;
 use teloxide::{prelude::*, utils::command::BotCommands};
+use crate::util::is_word;
+
+mod util;
 
 // get bot working
 // hookup postgres
@@ -91,71 +94,108 @@ async fn respond(
 ) -> ResponseResult<()> 
 {
     match cmd {
-        Command::H => bot.send_message(msg.chat.id, Command::descriptions().to_string()).await?,
+        Command::H => {
+            let help = "I am Alejandro, the romantic. I'll tell you whether an English word has roots in the Latin language./q Where applicable, I include modern translations for the word of interest (currently \"FR\", \"ES\", & \"IT\"). I can also translate words to and from various languages./t\n\nSee the commands list for usage and syntax.\n\ntips: A query result contains a grammatical part (noun, adj, verb) that refers to the latin root, and not necessarily the english word. However, I will do my best to ensure the 'modern equivalents' correspond grammatically to the english term.\n\nKeep in mind, the 'modern equivalents' aim to capture lexical forms that most closely resemble their latin origin, but since the meaning of words has drifted over time, they may no longer track semantically or are only rarely used. For more dynamic translations, the translate command should come in handy.\n\nBy the way, we're adding words to the dictionary all the time - let us know if you believe a common English/Latin pair is missing.\n\nOk enough preamble,\nCarpe Diem!";
+            
+            //bot.send_message(msg.chat.id, Command::descriptions().to_string()).await?,
+            bot.send_message(msg.chat.id, help).await?
+        },
         Command::Q => {
-            // Accept a list of words and iterate until we find a match
+            // 
             // e.g. "/q foo absent"
             let text = msg.text().unwrap();
-
-            let mut iter = text.split_whitespace();
-            let _cmd = iter.next();
-
-            // Match queries against dictionary words
-            // note: we only return a result for the first match, as we can only return 1 message (Command match arms)
-            let mut q = String::new();
+            let words: Vec<String> = text.split_whitespace()
+                .filter(|s| is_word(s))
+                .map(|s| s.to_lowercase())
+                .collect();
             
-            while let Some(str) = iter.next() {
+            let mut q = String::new(); // the query param
+
+            // Check for match against dictionary entries
+            let mut is_entry = false;
+            for str in &words {
                 let s = str.to_owned();
-                let first = str.chars().next().unwrap();
-                let vec = dict.get(&first).unwrap();
-                // TODO: validate first is in [a-z]
-                if vec.contains(&s) {
+                let ch = (&s).chars().next().unwrap();
+                if dict.get(&ch).unwrap().contains(&s) {
                     q.push_str(&s);
+                    is_entry = true;
                     break;
                 }
             }
-            
-            let reply = if q.len() == 0 { String::from("None") } else {
-                // Query database
-                let row = sqlx::query_as!(
-                    Latin,
-                    "select * from latin where en = ($1)", q
-                )
-                .fetch_one(&db)
-                .await.expect("failed to read db");
-            
-                // Build reply
-                let la = row.la;
-                let defn = row.defn;
-                let fr = row.fr;
-                let es = row.es;
-                let it = row.it;
-                format!("Here's what I found for {q},\nfrom the latin: {la}, {defn}\nmodern equivalents:\nfr {fr}\nes {es}\nit {it}")
+
+            let reply = if words.len() == 0 {
+                // user passed no args
+                format!("None")
+            } else if is_entry {
+                // search exact
+                let row = sqlx::query_as!(Latin, "SELECT * FROM latin WHERE en = ($1)", q)
+                    .fetch_one(&db)
+                    .await.expect("dict entry should return a db row");
+                
+                let Latin { id: _, en, la, defn, fr, es, it } = row;
+                format!("Here's what I've got for {en},\nfrom the latin: {la}, {defn}\nmodern equivalents:\nfr {fr}\nes {es}\nit {it}")
+            } else {
+                // search similar, using first char of first word
+                // shouldn't fail assuming all dictionary buckets are populated
+                let elem = &words[0];
+                let ch = elem.chars().next().unwrap();
+                q.push_str(&format!("{ch}%"));
+
+                let row = sqlx::query_as!(Latin, "SELECT * FROM latin WHERE en LIKE ($1)", q)
+                    .fetch_optional(&db)
+                    .await.expect("failed to read db");
+                
+                match row {
+                    Some(row) => {
+                        let Latin { id: _, en, la, defn, fr, es, it } = row;
+                        format!("I found something similar: {en},\nfrom the latin: {la}, {defn}\nmodern equivalents:\nfr {fr}\nes {es}\nit {it}")
+                    },
+                    None => format!("None")
+                }
             };
             
             bot.send_message(msg.chat.id, &reply).await?
         },
         Command::T => {
             // Call `translate_text` from deepl api
-            let raw = msg.text().unwrap();
-            let s = raw.strip_prefix("/t ").unwrap(); // handle case that user sends no args
-
-            let reply = match dl.translate_text(s, Lang::IT).await {
-                Ok(r) => {
-                    let trans = r.translations;
-                    if trans.len() > 0 {
-                        String::from(&trans[0].text)
-                    } else {
-                        String::from("None")
+            let text = msg.text().unwrap();
+            let mut iter = text.split_whitespace();
+            let _cmd = iter.next();
+            let trg = iter.next();
+            
+            let mut s = String::new();
+            while let Some(str) = iter.next() {
+                // recombine, inserting single space
+                // TODO: write a regex for this ??
+                if !is_word(str) { continue }
+                s.push_str(&format!("{str} "));
+            }
+            
+            let reply = if trg == None || s.len() == 0 { 
+                format!("None")
+            } else {
+                let trg = trg.unwrap().to_uppercase();
+                if let Ok(lang) = Lang::try_from(&trg) {
+                    match dl.translate_text(s, lang).await {
+                        Ok(r) => {
+                            let trans = r.translations;
+                            if trans.len() > 0 {
+                                String::from(&trans[0].text)
+                            } else {
+                                String::from("None")
+                            }
+                        },
+                        Err(e) => {
+                            log::debug!("API translate returned an error: {e}");
+                            format!("bad request. refer to logs")
+                        }
                     }
-                },
-                Err(e) => {
-                    log::debug!("API translate returned an error: {e}");
-                    format!("bad request. refer to logs")
+                } else { 
+                    format!("unknown target lang")
                 }
             };
             
-            bot.send_message(msg.chat.id, &reply).await?            
+            bot.send_message(msg.chat.id, &reply).await?
         },
         Command::U => {
             // Get usage stats
@@ -170,11 +210,8 @@ async fn respond(
                     format!("bad request. refer to logs")
                 }
             };
-            
             bot.send_message(msg.chat.id, &reply).await?
         }
     };
-
     Ok(())
 }
-
