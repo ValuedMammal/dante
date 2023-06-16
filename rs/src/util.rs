@@ -4,21 +4,17 @@ use regex::Regex;
 use super::Dictionary;
 use std::sync::Arc;
 
-/// Returns a reference to the matching element in `words`
+/// If option is Some, returns a reference to the matching element in `words`
 pub fn from_dictionary_option(words: &Vec<String>, dict: Arc<Dictionary>) -> Option<&str> {
     if words.len() == 0 { return None }
     
-    let mut i = 0_usize;
     for w in words {
-        // let s = w.to_owned();
-        let ch = w.chars().next().unwrap();
-        if dict.map.get(&ch).unwrap().contains(w) {
+        let key = w.chars().next().unwrap();
+        if dict.map.get(&key).unwrap().contains(w) {
             // Ok to unwrap, as `Dictionary::new` populates all keys,
             // and `is_query_candidate` constrains `words` to ascii only
-            let s = &words[i];
-            return Some(s)            
+            return Some(w)
         }
-        i += 1;
     }
     None
 }
