@@ -222,34 +222,34 @@
 222,mountain,mons,"(n) large natural elevation",montagne,montaña,montagna
 223,multitude,multitudo,"(n) a great number",multitude,multitud,moltitudine
 224,mundane,mundus,"(n) world",mondain,mundial,mundial
-225,mural,murus,"(n) wall",mur,muro,muro
-226,mutate,mutatus,"defn",fr,es,it
-227,narrate,narratus,"defn",fr,es,it
-228,nautical,nauticus,"defn",fr,es,it
-229,navigate,navigatus,"defn",fr,es,it
-230,navy,navis,"defn",fr,es,it
-231,necessary,necessarius,"defn",fr,es,it
-232,neglect,neglectus,"defn",fr,es,it
-233,negotiate,negotiatus,"defn",fr,es,it
-234,nocturnal,nocturnus,"defn",fr,es,it
-235,nominal,nominalis,"defn",fr,es,it
-236,nominate,nominatus,"defn",fr,es,it
-237,note,nota,"defn",fr,es,it
-238,number,numerus,"defn",fr,es,it
-239,numeral,numerus,"defn",fr,es,it
-240,obscure,obscurus,"defn",fr,es,it
-241,obtain,obtinere,"defn",fr,es,it
-242,occupy,occupare,"defn",fr,es,it
-243,ocular,oculus,"defn",fr,es,it
-244,oppress,oppressus,"defn",fr,es,it
-245,ovine,ovis,"defn",fr,es,it
-246,partial,pars,"defn",fr,es,it
-247,paternal,paternus,"defn",fr,es,it
-248,pectoral,pectoral,"defn",fr,es,it
-249,pen,penna,"defn",fr,es,it
-250,penalty,poenalis,"defn",fr,es,it
-251,peninsula,paeninsula,"defn",fr,es,it
-252,people,populus,"defn",fr,es,it
+225,mural,muru,"(n) wall",mur,muro,muro
+226,mutation,mutare,"(v) change, modify",mutation,mutación,mutazione
+227,narrate,narrare,"(v) tell, recount",narrer,narrar,narrare
+228,nautical,nauticus,"(adj) pertaining to sailors or navigation",nautique,náutico,nautico
+229,navigate,navigare,"(v) sail, drive a ship",naviguer,navegar,navigare
+230,navy,navis,"(n) ship",navire,nave,nave
+231,necessary,necessarius,"(adj) be needful or compulsory",nécessaire,necesario,necessario
+232,neglect,neglegere,"(v) disregard",négligence,negligencia,negligenza
+233,negotiate,negotium,"(n) business, not leisure",négocier,negociar,negoziare
+234,nocturnal,nocturnus,"(adj) of the night",nocturne,nocturno,notturno
+235,nominal,nomen,"(n) name",nominal,nominal,nominale
+236,nominate,nominare,"(v) to name someone or thing",nommer,nombrar nominar,nominare
+237,note,nota,"(n) a mark",note,nota,nota
+238,number,numerus,"(n) quantity or sum",nombre numéro,número,numero
+239,numerous,numerosus,"(adj) great in number, many",nombreux,numeroso,numeroso
+240,obscure,obscurus,"(adj) dark",obscur,oscuro,oscuro
+241,obtain,obtinere,"(v) gain hold of",obtenir,obtener,ottenere
+242,occupy,occupare,"(v) seize",occuper,ocupar,occupare
+243,ocular,oculus,"(n) eye",oculaire,ocular,oculare
+244,oppress,oppressare opprimere,"(v) press against, squeeze",opprimer,oprimir,opprimere
+245,ovine,ovis,"(n) sheep",ovin,ovino ovejuno,ovino
+246,partial,pars,"(n) portion or region",partial partiel,parcial,parziale
+247,paternal,pater,"(n) father",paternel,paterno,paterno
+248,pectoral,pectus,"(n) chest",pectoral,pectoral,pettorale
+249,pen,penna,"(n) feather",plume,pluma,penna piuma
+250,penalty,poena,"(n) pain, punishment",pénalité,pena,pena
+251,peninsula,paeninsula,"(n) nearly an island",péninsule,península,penisola
+252,people,populus,"(n) citizens, inhabitants",peuple,pueblo,popolo
 253,perfect,perfectus,"defn",fr,es,it
 254,perish,perire,"defn",fr,es,it
 255,petulant,petulans,"defn",fr,es,it
@@ -273,7 +273,7 @@
 273,provoke,provocare,"defn",fr,es,it
 274,proximity,proximitas,"defn",fr,es,it
 275,punish,punire,"defn",fr,es,it
-276,quiet,quietus,"defn",fr,es,it
+--276,quiet,quietus,"defn",fr,es,it
 277,radius,radius,"defn",fr,es,it
 278,rational,rationalis,"defn",fr,es,it
 279,recipient,recipiens,"defn",fr,es,it
