@@ -198,31 +198,31 @@
 198,magnify,magnificare,"(v) extol, make great",magnifier,magnificar,magnificare
 199,major,major,"(n) adult, ancestor",majeur,mayor,maggiore
 200,malevolent,malevolens,"(adj) wishing ill",malveillant,malévolo,malevolo
-201,manufacture,manu factus,"defn",fr,es,it
-202,marine,marinus,"defn",fr,es,it
-203,maternal,maternus,"defn",fr,es,it
-204,me,me,"defn",fr,es,it
-205,mediate,mediatus,"defn",fr,es,it
-206,medicine,medicina,"defn",fr,es,it
-207,mediocre,mediocris,"defn",fr,es,it
-208,medium,medium,"defn",fr,es,it
-209,memory,memoria,"defn",fr,es,it
-210,meridian,meridianus,"defn",fr,es,it
-211,mile,milia,"defn",fr,es,it
-212,military,militaris,"defn",fr,es,it
-213,minimum,minimum,"defn",fr,es,it
-214,minor,minor,"defn",fr,es,it
-215,minus,minus,"defn",fr,es,it
-216,miracle,miraculum,"defn",fr,es,it
-217,miserable,miserabilis,"defn",fr,es,it
-218,mode,modus,"defn",fr,es,it
-219,modern,modo,"defn",fr,es,it
-220,morbid,morbidus,"defn",fr,es,it
-221,mortal,mortalis,"defn",fr,es,it
-222,mountain,montanus,"defn",fr,es,it
-223,multitude,multitudo,"defn",fr,es,it
-224,mundane,mundus,"defn",fr,es,it
-225,mural,muralis,"defn",fr,es,it
+201,manufacture,manufactum,"(n) made by hand",manufacture,manufactura,manufatto
+202,marine,marinus,"(adj) of the sea",marin,marino,marino
+203,maternal,mater,"(n) mother",maternel,maternal,materno
+204,grace,gratia,"(n) goodwill, thanks",grâce,gracia,grazia
+205,mediate,medius,"(n) middle",arbitrer,mediar,mediare
+206,medicine,medicina,"(n) clinical practice, treatment",médecine,medicina,medicina
+207,mediocre,mediocris,"(adj) of middle degree, somewhat mountainous",médiocre,mediocre,mediocre
+208,medium,medius,"(n) middle",moyen milieu,medio mediano,mezzo
+209,memory,memoria,"(n) history or recollection",mémoire,memoria,memoria
+210,meridian,meridianus,"(adj) of midday, noon",méridien,meridiano,meridiano
+211,mile,mille,"(n) a thousand",mille,mil,mille
+212,military,militaris,"(n) soldier",militaire,militar,militare
+213,minimum,minimus,"(adj) least",minimum,mínimo,minimo
+214,minor,minor,"(adj) smaller, less",mineur,menor,minore
+215,minus,minus,"(adj) smaller, less",moins,menos,meno
+216,miracle,miraculum,"(n) object of wonder",miracle,milagro,miracolo
+217,miserable,miserabilis,"(adj) pitiable",misérable,miserable,miserabile
+218,mode,modus,"(n) a measure, extent, or manner",mode,modo,modo
+219,modern,modo,"(adv) presently",moderne,moderno,moderno
+220,morbid,morbidus,"(adj) relating to disease",morbide,morboso,morboso
+221,mortal,mortalis,"(adj) of human origin",mortel,mortal,mortale
+222,mountain,mons,"(n) large natural elevation",montagne,montaña,montagna
+223,multitude,multitudo,"(n) a great number",multitude,multitud,moltitudine
+224,mundane,mundus,"(n) world",mondain,mundial,mundial
+225,mural,murus,"(n) wall",mur,muro,muro
 226,mutate,mutatus,"defn",fr,es,it
 227,narrate,narratus,"defn",fr,es,it
 228,nautical,nauticus,"defn",fr,es,it
@@ -372,4 +372,3 @@
 372,voice,vox,"defn",fr,es,it
 373,vulnerable,vulnerare,"defn",fr,es,it
 374,justice,justitia jus,"(n) law or right",justice,justicia,giustizia
-375,grace,gratia,"(n) goodwill, thanks",grâce,gracia,grazia

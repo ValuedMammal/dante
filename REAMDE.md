@@ -29,14 +29,24 @@ want a way to programatically add rows to the db. this may prove more complicate
     - e.g. aquatic, from the latin: aqua, (n) water
     - ok to include two terms in a column (fr, es, it) separated by a space
 - Adjectives: gender normally follows masculine or neuter -  for no reason other than laziness or consistency
+- Wishlist
+    - visual indicator of success/failure of last command
+    - greedily search for the closest db match in case we don't have exact
+    - add more quirky comments, a la 'Carpe diem'
+    - performance / DOS considerations
+    - prompting interface, state machine
+
 
 ### Dev log:
 -------
+### 15Jun 2023  
+- worked on unit tests
+
 ### 14Jun 2023  
 -  rewrote trans-csv using regex
     - fixed typos in latin.csv
     - re-ran both scripts and diff'ed the outputs. identical result
-    -  tested \copy to postgres, syntax: `\copy latin from pglatin.csv with delimiter ';'` ( `;` to commit)
+    - tested \copy to postgres, syntax: `\copy latin from pglatin.csv with delimiter ';'` ( `;` to commit)
 
 ### 13Jun 2023  
 - py script for populating rows in postgres csv (~375 rows)  
@@ -108,3 +118,4 @@ liberty
 clairty  
 magnanimous  
 majority  
+sanctuary  
