@@ -250,30 +250,30 @@
 250,penalty,poena,"(n) pain, punishment",pénalité,pena,pena
 251,peninsula,paeninsula,"(n) nearly an island",péninsule,península,penisola
 252,people,populus,"(n) citizens, inhabitants",peuple,pueblo,popolo
-253,perfect,perfectus,"defn",fr,es,it
-254,perish,perire,"defn",fr,es,it
-255,petulant,petulans,"defn",fr,es,it
-256,picture,pictura,"defn",fr,es,it
-257,placid,placidus,"defn",fr,es,it
-258,plenty,plenus,"defn",fr,es,it
-259,plus,plus,"defn",fr,es,it
-260,popular,popularis,"defn",fr,es,it
-261,porcine,porcus,"defn",fr,es,it
-262,port,portus,"defn",fr,es,it
-263,potent,potens,"defn",fr,es,it
-264,potential,potentia,"defn",fr,es,it
-265,precious,pretiosus,"defn",fr,es,it
-266,premium,praemium,"defn",fr,es,it
-267,prime,primus,"defn",fr,es,it
-268,problem,problema,"defn",fr,es,it
-269,proceed,procedere,"defn",fr,es,it
-270,propinquity,propinquitas,"defn",fr,es,it
-271,protect,protectus,"defn",fr,es,it
-272,province,provincia,"defn",fr,es,it
-273,provoke,provocare,"defn",fr,es,it
-274,proximity,proximitas,"defn",fr,es,it
-275,punish,punire,"defn",fr,es,it
---276,quiet,quietus,"defn",fr,es,it
+253,perfect,perfectus,"(adj) completed",parfait,perfecto,perfetto
+254,perish,perire,"(v) pass away",périr,perecer,perire
+255,petulant,petulans,"(adj) immodest",pétulant,petulante,petulante
+256,picture,pictura,"(n) a painting",peinture,pintura,pittura
+257,placid,placidus,"(adj) calm, peaceful",placide,plácido,placido
+258,plenty,plenus,"(adj) full, abundant",plénitude,plenitud pleno,plenitudine pieno
+259,plus,plus,"(adj) more",plus,plus,più
+260,popular,popularis,"(adj) of the people",populaire,popular,popolare
+261,porcine,porcus,"(n) pig",porcin,porcino,porcino
+262,port,portus porta,"(n) harbor, gate",porte,puerta,porta
+263,potent,potens,"(adj) capable",potencé puissant,potente,potente
+264,potential,potentia,"(n) power",potentiel,potencial,potenziale
+265,precious,pretiosus,"(adj) of great value",précieux,precioso,prezioso
+266,premium,praemium,"(n) booty, reward",prime,premium prima,premio
+267,prime,primus,"(adj) first",prime premier,primo primero,primo
+268,problem,problema,"(n) riddle or topic of debate",probléme,problema,problema
+269,proceed,procedere,"(v) go forward",procéder,proceder,procedere
+270,propinquity,propinquitas,"(n) nearness, vicinity",propinquité (old),propincuidad,propinquità
+271,protect,protegere,"(v) to cover",protéger,proteger,proteggere
+272,province,provincia,"(n) official command",province,provincia,provincia
+273,provoke,provocare,"(v) challenge, call forth",provoquer,provocar,provocare
+274,proximity,proximitas,"(n) nearness, vicinity",proximité,proximidad,prossimità
+275,punish,punire,"(v)" inflict a penalty for wrongdoing,punir,punir,punire
+276,quiet,quies quietis,"(n) calm, peace",coi quiet,quedo quieto,cheto quieto
 277,radius,radius,"defn",fr,es,it
 278,rational,rationalis,"defn",fr,es,it
 279,recipient,recipiens,"defn",fr,es,it
