@@ -1,6 +1,6 @@
-use std::sync::Arc;
 use deepl::Lang;
 use sqlx::postgres::{PgPool, PgPoolOptions};
+use std::sync::Arc;
 use super::{
     Dictionary,
     Latin,
@@ -67,6 +67,10 @@ async fn find_closest_or_none() {
             vec![String::from("zzz"), String::from("xxx")],
             None
         ),
+        // finds correct substring e.g. 'quire' -> inquire
+        // (
+
+        // ),
     ];
 
     for case in test_vec {
@@ -129,7 +133,7 @@ fn dictionary() {
     assert_eq!(25, empty.len());
 }
     
-#[tokio::test]
+#[test]
 async fn match_dictionary() {
 
     // test iterate dictionary match 

@@ -1,10 +1,10 @@
 // #![allow(unused)]
+use crate::util::{from_dictionary_option, is_query_candidate, parse_translation_candidate};
 use deepl::DeepLApi;
 use sqlx::postgres::{PgPool, PgPoolOptions};
 use std::collections::HashMap;
 use std::sync::Arc;
 use teloxide::{prelude::*, utils::command::BotCommands};
-use crate::util::{from_dictionary_option, is_query_candidate, parse_translation_candidate};
 
 mod util;
 
@@ -27,10 +27,11 @@ struct Latin {
 pub struct Dictionary { map: HashMap<char, Vec<String>> }
 
 impl Dictionary {
+    /// Creates a new empty dictionary containing a map of words keyed by a single char in [a-z]
     fn new() -> Self {
         let mut map = HashMap::new();
 
-        // populate keys with char [a-z]
+        // initialize all keys/values
         for i in 0_u8..26 {
             let key = ('a' as u8 + i) as char;
             let val: Vec<String> = vec![];
@@ -125,17 +126,17 @@ async fn respond(
         allow.contains(&chat_id)
     }
     if !is_authorized(&msg) { 
-        // bot.send_message(msg.chat.id, "unauthorized").await?;
+        //bot.send_message(msg.chat.id, "unauthorized").await?;
         return Ok(())
     }
     
     match cmd {
         Command::H => bot.send_message(msg.chat.id, Command::descriptions().to_string()).await?,
         Command::Info => {
-            let help = "I am Alejandro, the romantic. I'll tell you whether an English word has roots in the Latin language. /q Where applicable, I include modern equivalents for the word of interest (currently \"FR\", \"ES\", & \"IT\"). I can also translate words to and from various languages. /t\n\nSee the commands list for usage and syntax. /h \n\ntips: A query result contains a grammatical part (noun, adj, verb) that refers to the latin root, and not necessarily the english word. However, I will do my best to ensure the other 'descendants' correspond grammatically to the english term.\n\nKeep in mind, the 'descendants' aim to capture lexical forms that most closely resemble their latin origin, but since the meaning of words drifts over time, they may no longer track semantically or are seldom used in modern parlance. For more dynamic translations, the translate command should come in handy.\n\nBy the way, we're adding words to the dictionary all the time - let us know if you believe a common English/Latin pair is missing.\n\nOk enough preamble,\nCarpe Diem!";
+            let help = "I am Alejandro, the romantic. I'll tell you whether an English word has roots in the Latin language. /q Where applicable, I include modern equivalents for the word of interest (currently \"FR\", \"ES\", & \"IT\"). I can also translate words to and from various languages. /t\n\nSee the commands list for usage and syntax. /h \n\ntips: A query result contains a grammatical part (noun, adj, verb) that refers to the latin root, and not necessarily the english word. However, I will do my best to ensure the 'descendants' correspond grammatically to the english term.\n\nKeep in mind, the 'descendants' aim to capture lexical forms that most closely resemble their latin origin, but since the meaning of words drifts over time, they may no longer track semantically or are seldom used in modern parlance. For more dynamic translations, the translate command should come in handy.\n\nBy the way, we're adding words to the dictionary all the time - let us know if you believe a common English/Latin pair is missing.\n\nOk enough preamble,\nCarpe Diem!";
             
-            // let chat_id = msg.chat.id.0;
-            // bot.send_message(msg.chat.id, format!("{chat_id}")).await?
+            //let chat_id = msg.chat.id.0;
+            //bot.send_message(msg.chat.id, format!("{chat_id}")).await?
             bot.send_message(msg.chat.id, help).await?
         },            
         Command::Q => {
@@ -205,7 +206,7 @@ async fn respond(
                         format!("❔ I found something similar: {en},\nfrom the latin: {la}, {defn}\ndescendants:\nfr {fr}\nes {es}\nit {it}")
                     },
                     None => {
-                        format!("❗️ None")
+                        format!("None")
                     }
                 }
             };
@@ -226,7 +227,7 @@ async fn respond(
                         },
                         Err(e) => {
                             log::debug!("API translate returned an error: {e}");
-                            format!("bad request. refer to logs")
+                            format!("❗️ bad request. refer to logs")
                         }
                     }
                 }
@@ -244,7 +245,7 @@ async fn respond(
                 },
                 Err(e) => {
                     log::debug!("API get_usage returned an error: {e}");
-                    format!("bad request. refer to logs")
+                    format!("❗️ bad request. refer to logs")
                 }
             };
             bot.send_message(msg.chat.id, &reply).await?

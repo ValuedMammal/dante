@@ -23,22 +23,28 @@ want a way to programatically add rows to the db. this may prove more complicate
 
 ### Dictionary approach:
 - Unique constraint on the english word, as this is the primary search term
-- From Dante help: "modern equivalents aim to capture lexical forms that most closely resemble their latin origin, but because the meaning of words drifts over time, may not track semantically, or are seldom used"  
+- From Dante help: "modern equivalents aim to capture (still recognized) lexical forms that most closely resemble their latin origin, but because the meaning of words drifts over time, may not track semantically, or are seldom used, or hold literary/symbolic significance." give an example ?  
 - For latin roots: generally try to match the grammar of the english term. in cases of ambiguity, go with what feels familiar, or where better translations exist
     - prefer verbs over adjectives. prefer noun when it can be clearly deduced by the etymology 
     - e.g. aquatic, from the latin: aqua, (n) water
+    - for latin verbs: prefer -re endings
     - ok to include two terms in a column (fr, es, it) separated by a space
 - Adjectives: gender normally follows masculine or neuter -  for no reason other than laziness or consistency
 - Wishlist
-    - visual indicator of success/failure of last command
     - greedily search for the closest db match in case we don't have exact
+    - expand query to look for matches in latin column
+    - prompting interface, state machine
+    - script for inserting rows rather than \copy
     - add more quirky comments, a la 'Carpe diem'
     - performance / DOS considerations
-    - prompting interface, state machine
 
 
 ### Dev log:
 -------
+### 19Jun 2023  
+- use wordsense.eu
+- consider double ended %foo% syntax to query substrings
+
 ### 15Jun 2023  
 - worked on unit tests
 
@@ -119,3 +125,21 @@ clairty
 magnanimous  
 majority  
 sanctuary  
+obfuscate  
+vulgar  
+ovum  
+parsimony  
+penultimate  
+famine  
+genial/gentile  
+impudent  
+irascible  
+please/pleasure piacere  
+peace  
+affable  
+price pretium  
+provenance  
+persuade  
+acquiesce  
+coy  
+
