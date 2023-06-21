@@ -1,9 +1,10 @@
 use deepl::Lang;
 use sqlx::postgres::{PgPool, PgPoolOptions};
 use std::sync::Arc;
+use crate::util::query_greedy;
+
 use super::{
     Dictionary,
-    Latin,
     util::{from_dictionary_option, is_query_candidate, parse_translation_candidate},
 };
 
@@ -39,11 +40,7 @@ fn valid_translatable() {
 }
 
 #[tokio::test]
-async fn find_closest_or_none() {
-    // recursively perform query on vector of words
-    // consuming each word by popping a char from the back
-    // returning first match on db row, else None
-    
+async fn find_like_or_none() {
     let db_path = std::env::var("DATABASE_URL").expect("failed to read db path from env");
     let db: PgPool = PgPoolOptions::new()
         .max_connections(10)
@@ -58,53 +55,36 @@ async fn find_closest_or_none() {
             Some(String::from("spelunker"))
         ),
         (
-            // finds LIKE with 'foo%' syntax
+            // finds LIKE with '%foo%' syntax
             vec![String::from("foo")],
             Some(String::from("focus"))
         ),
         (
-            // no result for empty buckets
-            vec![String::from("zzz"), String::from("xxx")],
+            // finds correct substring e.g. 'quire' -> inquire
+            vec!["quire".to_string()],
+            Some(String::from("inquire"))
+
+        ),
+        (
+            // test None returned
+            vec!["zzz".to_string()],
             None
         ),
-        // finds correct substring e.g. 'quire' -> inquire
-        // (
-
-        // ),
+        //
+        //     //TODO: finds closest latin match e.g. 'ere' -> apparere
+        //
     ];
 
     for case in test_vec {
-
-        // note: the below code doesn't belong to a function, so the same algorithm must be mirrored in main.rs
-        // fn might look like:
-            // let row: Option<Latin> = query_greedy(&words, db.clone());
-        let v = case.0;
-        let mut iter = v.iter();
+        let words = case.0;
         let expect = case.1;
 
-        let mut en: Option<String> = None;
+        let mut en: Option<String> = None; // an english word
 
-        while let Some(s) = iter.next() {
-            if en.is_some() { break } // happy path
+        let row = query_greedy(words, db.clone()).await;
 
-            let mut query = s.clone();
-            query.push('%');
-
-            loop  {
-                if let Some(latin) = sqlx::query_as!(Latin, "SELECT * FROM latin WHERE en LIKE ($1)", query).fetch_optional(&db).await.expect("failed to read db") {
-                    en = Some(latin.en);
-                    break
-                } else if query.len() == 2 {
-                    // avoid popping the last element
-                    // and go to next word
-                    break 
-                } else {
-                    // continue
-                    query.pop(); // %
-                    query.pop();
-                    query.push('%');
-                }
-            }
+        if let Some(latin) = row {
+            en = Some(latin.en)
         }
         assert_eq!(en, expect);
     }
@@ -134,7 +114,7 @@ fn dictionary() {
 }
     
 #[test]
-async fn match_dictionary() {
+fn match_dictionary() {
 
     // test iterate dictionary match 
     // e.g. [foo, bar, absent] yields 'absent'
@@ -163,5 +143,3 @@ async fn match_dictionary() {
     let exact = from_dictionary_option(&words, dict.clone());
     assert!(exact.is_none());
 }
-
-

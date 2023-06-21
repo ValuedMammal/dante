@@ -1,6 +1,10 @@
+// #![allow(unused)]
 use deepl::Lang;
 use lazy_static::lazy_static;
 use regex::Regex;
+use sqlx::PgPool;
+use super::Latin;
+
 use super::Dictionary;
 use std::sync::Arc;
 
@@ -48,5 +52,49 @@ pub fn parse_translation_candidate(str: &str) -> Result<(deepl::Lang, String), (
     let phrase = String::from(&caps[2]);
     Ok((target_lang, phrase))
 }
+
+/// Recursively searches the text, including substrings, for a similar row
+pub async fn query_greedy(words: Vec<String>, db: PgPool) -> Option<Latin> {
+    let mut row: Option<Latin> = None;
+
+    let mut iter = words.iter();
+    let mut count = 0_usize;
     
+    while let Some(s) = iter.next() {
+        if row.is_some() { break } // success
+        
+        // get owned value
+        let mut en = String::from(s);
+        
+        // wrap query in '%'
+        let mut q = String::from('%');
+        q.push_str(&en);
+        q.push('%');
+    
+        while en.len() > 1 {
+            // limit substring to at least 2 char
+            row = sqlx::query_as!(Latin, "SELECT * FROM latin WHERE en LIKE ($1) OR la LIKE ($1)", q)
+                .fetch_optional(&db)
+                .await.expect("failed to read db");
+            count += 1;
+            
+            if row.is_some() { break } else {
+                // pop last char and rebuild query
+                let _ = en.pop();
+                q.clear();
+                q.push('%');
+                q.push_str(&en);
+                q.push('%');
+            }
+        }
+    }
+    if let Some(latin) = row {
+        let en = &latin.en;
+        log::info!("Found result for {en} in {count} queries");
+        Some(latin)
+    } else {
+        log::info!("{count} queries returned None for {words:?}");
+        None
+    }
+}
     

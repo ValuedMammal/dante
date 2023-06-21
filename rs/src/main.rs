@@ -1,5 +1,5 @@
 // #![allow(unused)]
-use crate::util::{from_dictionary_option, is_query_candidate, parse_translation_candidate};
+use crate::util::{from_dictionary_option, is_query_candidate, parse_translation_candidate, query_greedy};
 use deepl::DeepLApi;
 use sqlx::postgres::{PgPool, PgPoolOptions};
 use std::collections::HashMap;
@@ -8,9 +8,7 @@ use teloxide::{prelude::*, utils::command::BotCommands};
 
 mod util;
 
-// TODO: validate chat and/or user id
-
-struct Latin {
+pub struct Latin {
     // Represents a row in the database
     #[allow(unused)]
     id: i32,
@@ -41,6 +39,7 @@ impl Dictionary {
     }
 
     /// Returns all the dictionary keys whose value is the empty vec
+    #[allow(dead_code)]
     fn get_empty(&self) -> Vec<char> {
         let map = &self.map;
 
@@ -97,9 +96,9 @@ async fn main() {
 #[derive(BotCommands, Clone)]
 #[command(rename_rule = "lowercase", description = "These commands are supported:")]
 enum Command {
-    #[command(description = "Show help")]
+    #[command(description = "Show help")] 
     H,
-    #[command(description = "Show long info")]
+    #[command(description = "More info")]
     Info,
     #[command(description = "Query: '/q <word>'")]
     Q,
@@ -156,7 +155,7 @@ async fn respond(
 
             let reply = if words.len() == 0 {
                 // no query candidates to use
-                format!("❗️ None")
+                format!("None")
             } else if let Some(en) = exact {
                 // search exact
                 let row = sqlx::query_as!(Latin, "SELECT * FROM latin WHERE en = ($1)", en)
@@ -166,41 +165,8 @@ async fn respond(
                 let Latin { id: _, en, la, defn, fr, es, it } = row;
                 format!("Here's what I've got for {en},\nfrom the latin: {la}, {defn}\ndescendants:\nfr {fr}\nes {es}\nit {it}")
             } else {
-                // Use first element of words as query
-                // search recursively for similar row, popping last char from query param
-                // shouldn't fail assuming all dictionary buckets are populated
-                // otherwise, return None
-                let mut iter = words.iter();
-                let mut row: Option<Latin> = None;
-
-                while let Some(s) = iter.next() {
-                    // if first letter belongs to an empty bucket, continue
-                    // hence, we're not wasting resources if someone sends e.g 'zzz'
-                    let first = s.chars().next().unwrap();
-                    if dict.get_empty().contains(&first) { continue }
-
-                    if row.is_some() { break } // success
-
-                    let mut en = s.clone(); // an english query param
-                    en.push('%');
-
-                    loop {
-                        if let Some(latin) = sqlx::query_as!(Latin, "SELECT * FROM latin WHERE en LIKE ($1)", en).fetch_optional(&db).await.expect("failed to read db") {
-                            row = Some(latin);
-                            break
-                        } else if en.len() == 2 {
-                            // avoid popping the last element
-                            // and go to next word
-                            break 
-                        } else { 
-                            // continue
-                            en.pop(); // %
-                            en.pop();
-                            en.push('%');
-                        }
-                    }
-                }
-                match row {
+                // greedily search for a similar row
+                match query_greedy(words, db.clone()).await {
                     Some(latin) => {
                         let Latin { id: _, en, la, defn, fr, es, it } = latin;
                         format!("❔ I found something similar: {en},\nfrom the latin: {la}, {defn}\ndescendants:\nfr {fr}\nes {es}\nit {it}")
