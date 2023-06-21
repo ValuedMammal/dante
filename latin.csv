@@ -298,32 +298,32 @@
 298,school,schola,"(n) place of learning",école,escuela,scuola
 299,science,scientia,"(n) knowledge",science,ciencia,scienza
 300,second,secundus,"(adj) next, following",second,segundo,secondo
-301,secret,secretus,"defn",fr,es,it
-302,sediment,sedimentum,"defn",fr,es,it
-303,semen,semen,"defn",fr,es,it
-304,senator,senator,"defn",fr,es,it
-305,sense,sentire,"defn",fr,es,it
-306,serpent,serpens,"defn",fr,es,it
-307,serve,servire,"defn",fr,es,it
-308,significant,significans,"defn",fr,es,it
-309,signify,significare,"defn",fr,es,it
-310,sinister,sinister,"defn",fr,es,it
-311,social,socialis,"defn",fr,es,it
-312,solar,solaris,"defn",fr,es,it
-313,solo,solus,"defn",fr,es,it
-314,sorority,soror,"defn",fr,es,it
-315,spatial,spatium,"defn",fr,es,it
-316,spectator,spectare,"defn",fr,es,it
-317,spelunker,spelunca,"defn",fr,es,it
-318,spine,spina,"defn",fr,es,it
-319,stellar,stella,"defn",fr,es,it
-320,subdue,subducere,"defn",fr,es,it
-321,summit,summum,"defn",fr,es,it
-322,superb,superbus,"defn",fr,es,it
-323,tabernacle,tabernaculum,"defn",fr,es,it
-324,tacit,tacitus,"defn",fr,es,it
-325,taciturn,taciturnus,"defn",fr,es,it
---326,tactile,tactilis,"defn",fr,es,it
+301,secret,secretus,"(adj) set apart",secret,secreto,segreto
+302,sediment,sedimentum,"(n) a settling",sédiment,sedimento,sedimento
+303,semen,semen,"(n) seed",semences,semilla,seme
+304,senator,senex,"(adj) old",sénateur,senador,senatore
+305,sense,sentire,"(v) to feel",sentir,sentir,sentire
+306,serpent,serpens,"(n) snake",serpent,serpiente,serpente
+307,serve,servire,"(v) perform or provide for another",servir,servir,servire
+308,significant,significantia,"(n) meaning or indication",signification,significado,significato
+309,signify,significare,"(v) indicate, portend",signifier,significar,significare
+310,sinister,sinister,"(adj) left",sinistre,siniestro,sinistro
+311,social,socius,"(n) friend, ally",social,social,sociale
+312,solar,sol,"(n) sun",solaire,solar,solare
+313,solo,solus,"(adj) alone",solo,solo,solo
+314,sorority,soror,"(n) sister",sororité,sororidad,sorellanza
+315,spatial,spatium,"(n) space",spatial,espacial,spaziale
+316,spectator,spectare,"(v) gaze, observe",spectateur,espectador,spettatore
+317,spelunker,spelunca,"(n) cave",spéléologue,espeleólogo,speleologo
+318,spine,spina,"(n) thorn, backbone",épine,espina,spina
+319,stellar,stella,"(n) star",stellaire,estelar,stellare
+320,subdue,subducere,"(v) draw from below",unknown,unknown,unknown
+321,summit,summus,"(adj) top, highest",sommet,summum sumun,summit sommità
+322,superb,superbus,"(adj) proud",superbe,soberbio,superbo
+323,tabernacle,tabernaculum,"(n) tent, tavern",tabernacle,tabernáculo,tabernacolo
+324,tacit,tacitus,"(adj) done without words, silent",tacite,tácito,tacito
+325,taciturn,taciturnus,"(adj) disinclined to speak",taciturne,taciturno,taciturno
+326,tactile,tactilis,"defn",fr,es,it
 327,taurine,taurus,"defn",fr,es,it
 328,tempo,tempus,"defn",fr,es,it
 329,tempt,temptare,"defn",fr,es,it
