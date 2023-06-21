@@ -274,30 +274,30 @@
 274,proximity,proximitas,"(n) nearness, vicinity",proximité,proximidad,prossimità
 275,punish,punire,"(v)" inflict a penalty for wrongdoing,punir,punir,punire
 276,quiet,quies quietis,"(n) calm, peace",coi quiet,quedo quieto,cheto quieto
-277,radius,radius,"defn",fr,es,it
-278,rational,rationalis,"defn",fr,es,it
-279,recipient,recipiens,"defn",fr,es,it
-280,reduce,reducere,"defn",fr,es,it
-281,regal,regalis,"defn",fr,es,it
-282,regulate,regula,"defn",fr,es,it
-283,relinquish,relinquere,"defn",fr,es,it
-284,remain,remanere,"defn",fr,es,it
-285,remember,rememorari,"defn",fr,es,it
-286,resist,resistere,"defn",fr,es,it
-287,respect,respectus,"defn",fr,es,it
-288,retain,retinere,"defn",fr,es,it
-289,ridicule,ridiculum,"defn",fr,es,it
-290,ridiculous,ridiculosus,"defn",fr,es,it
-291,sacrament,sacramentum,"defn",fr,es,it
-292,sacred,sacrare,"defn",fr,es,it
-293,saline,salinus,"defn",fr,es,it
-294,sapient,sapiens,"defn",fr,es,it
-295,satisfy,satisfacere,"defn",fr,es,it
-296,savage,silvaticus,"defn",fr,es,it
-297,scholar,schola,"defn",fr,es,it
-298,school,schola,"defn",fr,es,it
-299,science,scientia,"defn",fr,es,it
-300,second,secundus,"defn",fr,es,it
+277,radius,radius,"(n) ray, rod, spoke",rayon radius,radio,raggio radio
+278,rational,rationalis,"(adj) relating to reason",rationnel,racional,razionale
+279,recipient,recipere,"(v) take back",récipient,recipiente,recipiente
+280,reduce,reducere,"(v) bring back",réduire,reducir,ridurre
+281,regal,rex reg,"(n) king",royal régal,regio,regale regio
+282,regulate,regulare,"(v) rule, direct",réguler régler,regular,regolare
+283,relinquish,relinquere,"(v) leave, give up",relinquir lâcher,renunciar,rilasciare
+284,remain,remanere,"(v) to stay",rester demeurer,permanecer,rimanere
+285,remember,rememorari,"(v) call to mind",remémorer,remembrar,rimembrare
+286,resist,resistere,"(v) stall, withstand, or oppose",résister,resistir,resistere
+287,respect,respicere,"(v) look to, regard",respect,respeto,rispetto
+288,retain,retinere,"(v) hold back",retenir,retener,ritenere
+289,ridicule,ridere,"(v) laugh or mock",rire,reir,ridere
+290,ridiculous,ridiculus,"(adj) laughable",ridicule risible,ridículo,ridicolo
+291,sacrament,sacramentum,"(n) solemn oath",sacrement,sacramento,sacramento
+292,sacred,sacer,"(adj) holy",sacré,sacro sagrado,sacro
+293,saline,sal,"(n) salt",salé salin,salino,salino
+294,sapient,sapere,"(v) know, capable of discerning",sage,sabio,sapiente
+295,satisfy,satisfacere,"(v) make enough",satisfaire,satisfacer,soddisfare
+296,savage,silvaticus,"(adj) of the woods",sauvage,salvaje,selvatico
+297,scholar,schola,"(n) place of learning",écolier,escolar,scolaro
+298,school,schola,"(n) place of learning",école,escuela,scuola
+299,science,scientia,"(n) knowledge",science,ciencia,scienza
+300,second,secundus,"(adj) next, following",second,segundo,secondo
 301,secret,secretus,"defn",fr,es,it
 302,sediment,sedimentum,"defn",fr,es,it
 303,semen,semen,"defn",fr,es,it
@@ -323,7 +323,7 @@
 323,tabernacle,tabernaculum,"defn",fr,es,it
 324,tacit,tacitus,"defn",fr,es,it
 325,taciturn,taciturnus,"defn",fr,es,it
-326,tactile,tactilis,"defn",fr,es,it
+--326,tactile,tactilis,"defn",fr,es,it
 327,taurine,taurus,"defn",fr,es,it
 328,tempo,tempus,"defn",fr,es,it
 329,tempt,temptare,"defn",fr,es,it
