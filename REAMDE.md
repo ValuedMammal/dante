@@ -27,20 +27,36 @@ want a way to programatically add rows to the db. this may prove more complicate
 - For latin roots: generally try to match the grammar of the english term. in cases of ambiguity, go with what feels familiar, or where better translations exist
     - prefer verbs over adjectives. prefer noun when it can be clearly deduced by the etymology 
     - e.g. aquatic, from the latin: aqua, (n) water
-    - for latin verbs: prefer -re endings
+    - for latin verbs: prefer -are -ere -ire endings. present active infinitive
     - ok to include two terms in a column (fr, es, it) separated by a space
 - Adjectives: gender normally follows masculine or neuter -  for no reason other than laziness or consistency
 - Wishlist
-    - greedily search for the closest db match in case we don't have exact
-    - expand query to look for matches in latin column
+    - optionally specify source lang rather than auto-detect
+    - specify deepl formality
     - prompting interface, state machine
-    - script for inserting rows rather than \copy
     - add more quirky comments, a la 'Carpe diem'
     - performance / DOS considerations
+    - CI, deployment
 
 
 ### Dev log:
 -------
+### 22Jun 2023  
+- added src lang to translate cmd. (currently required)
+- added 3 error codes to `parse_translation_candidate`
+- fixed translate regex to deny whitespace only text
+
+### 21Jun 2023  
+- tested swap in dante token to the rust backend. tested add dante to lengua group. all good
+- /t ES hello returned error, invalid response: convert json bytes to Rust type: error decoding response body: invalid language code NB. This is an internal issue with the lib, please open issue at line 1 column 49
+    - setting source lang EN seems to have resolved this issue. so we need to extend the syntax to `/t <src> <trg> <phrase>`
+    - and add a regex capture group in `parse_translation_candidate`
+- rust deepl not parsing apostrophe? ('). Nevermind. tested phrase "Cosa sarebbe l'intelligenza" to and from english
+
+### 19Jun 2023  
+- append rows to postgres: `copy latin from pglatin.csv with delimiter ';' where id > ROWID` where ROWID is recent highest row
+- query greedy includes results containing substrings, '%foo%' and searches similar in both english and latin columns
+
 ### 19Jun 2023  
 - use wordsense.eu
 - consider double ended %foo% syntax to query substrings
@@ -142,4 +158,14 @@ provenance
 persuade  
 acquiesce  
 coy  
-
+reason ratio  
+royal  
+rule regula  
+nephew nepotism  
+rude  
+erudite  
+volition  
+serum  
+signal  
+conduct  
+tavern  
