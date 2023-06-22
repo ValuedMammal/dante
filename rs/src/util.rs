@@ -33,24 +33,29 @@ pub fn is_query_candidate(str: &str) -> bool {
 }
 
 /// Attempts to parse a target lang and word/phrase to send to the translator
-pub fn parse_translation_candidate(str: &str) -> Result<(deepl::Lang, String), ()> {
+pub fn parse_translation_candidate(text: &str) -> Result<(Lang, Lang, String), i32> {
     lazy_static!(
-        static ref RE: Regex = Regex::new(r"^/t ([A-Za-z\-]{2,5}) ([A-Za-z\u00C0-\u00FF]{2}[A-Za-z\u00C0-\u00FF\s]*)").unwrap();
+        static ref RE: Regex = Regex::new(r"^/t ([A-Za-z]{2})[, ]([A-Za-z\-]{2,5}) ([\S&&[\u0020-\u007F\u00C0-\u00FF]{2}][\u0020-\u007F\u00C0-\u00FF\s]*)").unwrap();
         // phrase allows ascii, latin-1, and whitespace
-        // starts with at least two non-space chars
+        // TODO: should start with at least two non-space chars
+        // TODO: support omitting source lang 
     );
 
-    let Some(caps) = RE.captures(str) else {
-        return Err(())
+    let Some(caps) = RE.captures(text) else {
+        return Err(-1)
     };
     
-    let trg = (&caps[1]).to_uppercase();
-    let Ok(target_lang) = Lang::try_from(&trg) else {
-        return Err(())
+    let src = (&caps[1]).to_uppercase();
+    let Ok(src_lang) = Lang::try_from(&src) else {
+        return Err(-2)
+    };
+    let trg = (&caps[2]).to_uppercase();
+    let Ok(trg_lang) = Lang::try_from(&trg) else {
+        return Err(-3)
     };
     
-    let phrase = String::from(&caps[2]);
-    Ok((target_lang, phrase))
+    let phrase = String::from(&caps[3]);
+    Ok((src_lang, trg_lang, phrase))
 }
 
 /// Recursively searches the text, including substrings, for a similar row

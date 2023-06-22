@@ -19,23 +19,37 @@ fn valid_query() {
 
 #[test]
 fn valid_translatable() {
-    let test_vec: Vec<(&str, (Lang, String))> = vec![
+    // syntax: /t src_lang trg_lang text
+    let test_vec: Vec<(&str, (Lang, Lang, String))> = vec![
         (
-            "/t de good morning",
-            (Lang::DE, "good morning".to_string())
+            "/t en de good morning",
+            (Lang::EN, Lang::DE, "good morning".to_string())
         ),
         (
-            "/t en-us dos lápices",
-            (Lang::EN_US, "dos lápices".to_string())
+            "/t es en-us dos lápices",
+            (Lang::ES, Lang::EN_US, "dos lápices".to_string())
         ),
+        (
+            // test rejects all whitespace
+            "/t en de   ",
+            (Lang::EN, Lang::DE, "  ".to_string())
+        ),
+        
     ];
     
-    for t in test_vec {
+    let l = test_vec.len();
+    for i in 0..l {
+        let t = &test_vec[i];
         let result = parse_translation_candidate(t.0);
 
-        assert!(result.is_ok());
-        let (trg, s) = t.1;
-        assert_eq!(result.unwrap(), (trg, s));
+        // success path
+        if i < 2 {
+            assert!(result.is_ok());
+            assert_eq!(result.unwrap(), t.1);
+        } else {
+            // error path
+            assert_eq!(result, Err(-1))
+        }
     }
 }
 
