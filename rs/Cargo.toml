@@ -11,6 +11,7 @@ log = "0.4"
 pretty_env_logger = "0.4"
 tokio = { version =  "1.28", features = ["full"] }
 sqlx = { version = "0.6.3", features = ["postgres", "runtime-tokio-native-tls", "macros"] }
-deepl = "0.4.1"
+#deepl = { git = "https://github.com/ValuedMammal/deepl-rs.git" }
+deepl = "0.4.2"
 regex = "1.8.4"
 lazy_static = "1.4.0"
