@@ -10,7 +10,7 @@
 import re
 
 # Approach
-# replace comma with semicolon
+# replace all comma with semicolon
 # remove double quotes
 # in the defn string, replace any semicolon with comma
 # concat capture groups into string and collect
@@ -22,13 +22,13 @@ import re
 # d = '2,accelerate,accelerare,"(v) speed up, quicken",accélérer,acelerar,accelerare' # diacritics in last 3 elems
 # lines = [a, b, c, d]
 
-p = re.compile('^([\da-z;\s]+)("[()a-z;\s\-]+")([a-z();\s\u00C0-\u017F]+)$')
+p = re.compile('^([\da-z;\s]+)"([()a-z;\s\-]+)"([a-z();\s\u00C0-\u017F]+)$')
 # group 1: id,en,la # note \d for digit
 # group 2: defn
 # group 3: fr,es,it # note range of extra latin char
 
 # Read in
-with open('latin.csv', 'r') as f:
+with open('temp-latin.csv', 'r') as f:
     lines = f.readlines()
 
 out: list[str] = []
@@ -45,7 +45,7 @@ for src in lines:
     # strip quotes
     # note: can simply capture inside the quotes in regex?
     defn: str = match.group(2)
-    defn = defn.strip('"')
+    # defn = defn.strip('"') # redundant
 
     # replace semicolon in defn
     defn = defn.replace(';', ',')
@@ -58,5 +58,5 @@ for src in lines:
     out.append(s)
 
 # Write out
-with open('pglatin.csv', 'w') as f:
+with open('temp-pglatin.csv', 'w') as f:
     f.writelines(out)
