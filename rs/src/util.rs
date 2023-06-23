@@ -35,9 +35,9 @@ pub fn is_query_candidate(str: &str) -> bool {
 /// Attempts to parse a target lang and word/phrase to send to the translator
 pub fn parse_translation_candidate(text: &str) -> Result<(Lang, Lang, String), i32> {
     lazy_static!(
-        static ref RE: Regex = Regex::new(r"^/t ([A-Za-z]{2})[, ]([A-Za-z\-]{2,5}) ([\S&&[\u0020-\u007F\u00C0-\u00FF]{2}][\u0020-\u007F\u00C0-\u00FF\s]*)").unwrap();
+        static ref RE: Regex = Regex::new(r"^/t ([A-Za-z]{2})[, ]([A-Za-z\-]{2,5}) ([\S&&[\u0020-\u007F\u00C0-\u00FF]{2}][\u0020-\u007F\u00C0-\u00FF\s]*)$").unwrap();
         // phrase allows ascii, latin-1, and whitespace
-        // TODO: should start with at least two non-space chars
+        // must start with at least two non-space chars
         // TODO: support omitting source lang 
     );
 

@@ -1,6 +1,6 @@
 // #![allow(unused)]
 use crate::util::{from_dictionary_option, is_query_candidate, parse_translation_candidate, query_greedy};
-use deepl::DeepLApi;
+use deepl::{DeepLApi, Formality};
 use sqlx::postgres::{PgPool, PgPoolOptions};
 use std::collections::HashMap;
 use std::sync::Arc;
@@ -22,7 +22,9 @@ pub struct Latin {
 
 /// Type for building an in-memory dictionary mapping ascii char to a vector of english words
 // e.g. {'a': ['absent',], ..., 'z': []}
-pub struct Dictionary { map: HashMap<char, Vec<String>> }
+pub struct Dictionary { 
+    map: HashMap<char, Vec<String>> 
+}
 
 impl Dictionary {
     /// Creates a new empty dictionary containing a map of words keyed by a single char in [a-z]
@@ -49,6 +51,9 @@ impl Dictionary {
         .collect()
     }
 }
+
+// The global application formality preference
+const DEFAULT_FORMALITY: Formality = Formality::PreferLess;
 
 #[tokio::main]
 async fn main() {
@@ -191,7 +196,7 @@ async fn respond(
                 Err(_) => format!("❗️ unknown error occurred"), // unreachable assuming we've covered each err code
                 Ok((src, trg, s)) => {
                     log::info!("Requesting translate for {s}");
-                    match dl.translate_text(s, trg).source_lang(src).await {
+                    match dl.translate_text(s, trg).source_lang(src).formality(DEFAULT_FORMALITY).await {
                         Ok(r) => {
                             let trans = r.translations;
                             String::from(&trans[0].text)
