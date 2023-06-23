@@ -323,52 +323,52 @@
 323,tabernacle,tabernaculum,"(n) tent, tavern",tabernacle,tabernáculo,tabernacolo
 324,tacit,tacitus,"(adj) done without words, silent",tacite,tácito,tacito
 325,taciturn,taciturnus,"(adj) disinclined to speak",taciturne,taciturno,taciturno
-326,tactile,tactilis,"defn",fr,es,it
-327,taurine,taurus,"defn",fr,es,it
-328,tempo,tempus,"defn",fr,es,it
-329,tempt,temptare,"defn",fr,es,it
-330,tenure,tenere,"defn",fr,es,it
-331,terrain,terrenum,"defn",fr,es,it
-332,terrible,terribilis,"defn",fr,es,it
-333,terrify,terrificare,"defn",fr,es,it
-334,tertiary,tertiarius,"defn",fr,es,it
-335,textile,textile,"defn",fr,es,it
-336,texture,textura,"defn",fr,es,it
-337,timid,timidus,"defn",fr,es,it
-338,total,totus,"defn",fr,es,it
-339,transit,transire,"defn",fr,es,it
-340,translucent,translucens,"defn",fr,es,it
-341,transmit,transmittere,"defn",fr,es,it
-342,transport,transportare,"defn",fr,es,it
-343,tremble,tremere,"defn",fr,es,it
-344,tyrant,tyrannus,"defn",fr,es,it
-345,ultimate,ultimus,"defn",fr,es,it
-346,umbrella,umbella,"defn",fr,es,it
-347,unctuous,unctus,"defn",fr,es,it
-348,undulate,unda,"defn",fr,es,it
-349,urban,urbanus,"defn",fr,es,it
-350,valediction,valedicere,"defn",fr,es,it
-351,value,valere,"defn",fr,es,it
-352,vast,vastus,"defn",fr,es,it
-353,vehement,vehemens,"defn",fr,es,it
-354,venom,venemum,"defn",fr,es,it
-355,ventilate,ventilatus,"defn",fr,es,it
-356,verbal,verbum,"defn",fr,es,it
-357,verity,veritas,"defn",fr,es,it
-358,very,verax,"defn",fr,es,it
-359,vex,vexare,"defn",fr,es,it
-360,via,via,"defn",fr,es,it
-361,vicinity,vicinitas,"defn",fr,es,it
-362,video,videre,"defn",fr,es,it
-363,vigilant,vigilans,"defn",fr,es,it
-364,village,villa,"defn",fr,es,it
-365,virile,virilis,"defn",fr,es,it
-366,vision,visio,"defn",fr,es,it
-367,vital,vitalis,"defn",fr,es,it
-368,vivacious,vivax,"defn",fr,es,it
-369,vivid,vividus,"defn",fr,es,it
-370,vocal,vocalis,"defn",fr,es,it
-371,vocation,vocatio,"defn",fr,es,it
-372,voice,vox,"defn",fr,es,it
-373,vulnerable,vulnerare,"defn",fr,es,it
+326,tactile,tactilis,"(adj) perceptible by touch",tactile,táctil,tattile
+327,taurine,taurus,"(n) bull",taurin,taurina,taurina
+328,tempo,tempus,"(n) time",temps,tiempo,tempo
+329,tempt,temptare,"(v) test, try",tenter,tentar,tentare
+330,tenure,tenere,"(v) have, hold",tenir,tener,tenere
+331,terrain,terrenum terra,"(n) land, earth",terrain,terreno,terreno
+332,terrible,terrere,"(v) frighten",terrible,terrible,terribile
+333,inferno,infernum,"(n) underworld",enfer,infierno,inferno
+334,tertiary,tertius,"(adj) third",tier,tercio,terzo
+335,textile,textilis,"(adj) woven",textile,textil,tessile
+336,texture,textura,"(n) a weave",texture,textura,tessuto
+337,timid,timere,"(v) to fear",timide,tímido,timido
+338,total,totum,"(n) whole",total,total,totale
+339,transit,transire,"(v) go across",transit,tránsito,transito
+340,translucent,translucere,"(v) shine through",translucide,traslúcido,traslucido
+341,transmit,transmittere,"(v) send across",transmettre,transmitir,trasmettere
+342,transport,transportare,"(v) carry across",transporter,transportar,trasportare
+343,tremble,tremere,"(v) shake involuntarily",trembler,temblar,tremare
+344,tyranny,tyrannus,"(n) despot, oppressive ruler",tyrannie,tiranía,tirannia
+345,ultimate,ultimus,"(n) last, final",ultime,último,ultimo
+346,umbrella,umbra,"(n) shadow",ombrelle,sombrilla,ombrello
+347,unctuous,unguere,"(v) anoint",onctueux,untuoso,untuoso
+348,undulate,unda,"(n) wave",onduleux,ondular,ondulato
+349,urban,urbs,"(n) city",urbain,urbano,urbano
+350,valediction,valedicere,"(v) bid farewell",unknown,unknown,unknown
+351,value,valere,"(v) be healthy or worthy",valeur,valor,valore
+352,vast,vastus,"(adj) void, immense",vaste,vasto,vasto
+353,vehement,vehemens,"(adj) eager, impetuous",véhément,vehemente,veemente
+354,venom,venenum,"(n) poison",venin,veneno,veleno
+355,ventilate,ventulus,"(n) slight wind",ventiler,ventilar,ventilare
+356,verbal,verbum,"(n) word",verbal,verbal,verbale
+357,verity,veritas,"(n) truth",vérité,verdad,verità
+358,very,verus,"(adj) true, real",vrai,vero verdadero,vero
+359,vex,vexare,"(v) shake, disturb",vexer,vejar,vessare
+360,via,via,"(n) way, road",voie via,vía,via
+361,vicinity,vicinitas,"(n) proximity, neighborhood",vicinité,vecindad,vicinità vicinanze
+362,video,videre,"(v) to see",vidéo,video,video
+363,vigilant,vigilans,"(adj) watchful",vigilant,vigilante,vigilante
+364,village,villa,"(n) country house",villa village,villa,villa villaggio
+365,virile,virilis vir,"(adj) having energy and drive, typical of a man",viril,viril,virile
+366,vision,visio,"(n) faculty of sight",vision,visión,visione
+367,vital,vita vitalis,"(n) life, living",vital,vital,vitale
+368,vivacious,vivax,"(adj) lively",vivace,vivaz,vivace
+369,vivid,vivere vividus,"(v) to live, lively",vivide,vívido,vivido
+370,vocal,vocalis vox,"(adj) relating to sound or speaking",vocal,vocal,vocale
+371,vocation,vocatio,"(n) a calling, occupation",vocation,vocación,vocazione
+372,voice,vox,"(n) voice",voix,voz,voce
+373,vulnerable,vulnus,"(n) a wound",vulnérable,vulnerable,vulnerabile
 374,justice,justitia jus,"(n) law or right",justice,justicia,giustizia
