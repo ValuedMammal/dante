@@ -1,16 +1,16 @@
+use super::{
+    util::{from_dictionary_option, is_valid_query, parse_translatable, query_greedy},
+    Dictionary,
+};
 use deepl::Lang;
 use sqlx::postgres::{PgPool, PgPoolOptions};
 use std::sync::Arc;
-use super::{
-    Dictionary,
-    util::{from_dictionary_option, is_valid_query, parse_translatable, query_greedy},
-};
 
 #[test]
 fn valid_query() {
     let bad = "/q";
     assert!(!is_valid_query(bad));
-    
+
     let raw = "/q foo bar absent";
     assert!(is_valid_query(raw));
 }
@@ -21,14 +21,14 @@ async fn valid_translatable() {
     let test_vec: Vec<(&str, (Lang, Lang, String))> = vec![
         (
             "/t en de good morning",
-            (Lang::EN, Lang::DE, "good morning".to_string())
+            (Lang::EN, Lang::DE, "good morning".to_string()),
         ),
         (
             "/t it en-us Cos'è l'intelligenza?",
-            (Lang::IT, Lang::EN_US, "Cos'è l'intelligenza?".to_string())
+            (Lang::IT, Lang::EN_US, "Cos'è l'intelligenza?".to_string()),
         ),
     ];
-    
+
     // successfully parsed
     for t in test_vec {
         let result = parse_translatable(t.0);
@@ -49,35 +49,35 @@ async fn find_like_or_none() {
     let db: PgPool = PgPoolOptions::new()
         .max_connections(10)
         .connect(&db_path)
-        .await.expect("failed to connect postgres");
+        .await
+        .expect("failed to connect postgres");
 
     let test_vec: Vec<(Vec<String>, Option<String>)> = vec![
         (
             // walks the vector,
             // and strips trailing char
             vec![String::from("zzz"), String::from("spelunkerzzz")],
-            Some(String::from("spelunker"))
+            Some(String::from("spelunker")),
         ),
         (
             // finds LIKE with '%foo%' syntax
             vec![String::from("foo")],
-            Some(String::from("focus"))
+            Some(String::from("focus")),
         ),
         (
             // finds correct substring e.g. 'quire' -> inquire
             vec!["quire".to_string()],
-            Some(String::from("inquire"))
-
+            Some(String::from("inquire")),
         ),
         (
             // finds closest latin match e.g. '-arium' -> aviary
             vec!["arium".to_string()],
-            Some(String::from("aviary"))
+            Some(String::from("aviary")),
         ),
         (
             // test None returned
             vec!["zzz".to_string()],
-            None
+            None,
         ),
     ];
 
@@ -100,7 +100,7 @@ async fn find_like_or_none() {
 fn dict_new() {
     //struct Dictionary { map: HashMap<char, Vec<String>> }
     let d = Dictionary::new();
-    
+
     // all keys present, with empty vectors
     for i in 0_u8..26 {
         let key = (b'a' + i) as char;
@@ -109,17 +109,14 @@ fn dict_new() {
         assert!(val.unwrap().is_empty())
     }
 }
-    
+
 #[test]
 fn dict_match() {
-
-    // test iterate dictionary match 
+    // test iterate dictionary match
     // e.g. [foo, bar, absent] yields 'absent'
 
     let mut d = Dictionary::new();
-    d.map.get_mut(&'s')
-        .unwrap()
-        .push(String::from("spelunker"));
+    d.map.get_mut(&'s').unwrap().push(String::from("spelunker"));
 
     let dict = Arc::new(d);
 
@@ -133,7 +130,7 @@ fn dict_match() {
     let exact = from_dictionary_option(&words, dict.clone());
     assert!(exact.is_some());
     assert_eq!(exact.unwrap(), "spelunker");
-    
+
     // no match
     words.pop(); // spelunker
     words.push(String::from("baz"));

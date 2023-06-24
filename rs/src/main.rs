@@ -1,5 +1,7 @@
 //#![allow(unused)]
-use crate::util::{from_dictionary_option, parse_translatable, is_authorized, is_valid_query, query_greedy};
+use crate::util::{
+    from_dictionary_option, is_authorized, is_valid_query, parse_translatable, query_greedy,
+};
 use deepl::{DeepLApi, Formality};
 use sqlx::postgres::{PgPool, PgPoolOptions};
 use std::collections::HashMap;
@@ -23,8 +25,8 @@ pub struct Latin {
 
 /// Type for building an in-memory dictionary mapping ascii char to a vector of english words
 // e.g. {'a': ['absent',], ..., 'z': []}
-pub struct Dictionary { 
-    map: HashMap<char, Vec<String>> 
+pub struct Dictionary {
+    map: HashMap<char, Vec<String>>,
 }
 
 impl Dictionary {
@@ -49,24 +51,26 @@ const DEFAULT_FORMALITY: Formality = Formality::PreferLess;
 async fn main() {
     dotenv::dotenv().ok();
     pretty_env_logger::init();
-    
+
     let bot = Bot::from_env();
     log::info!("Starting tg bot...");
 
     let dl_auth = std::env::var("DEEPL_API_KEY").unwrap();
     let dl = DeepLApi::with(&dl_auth).new();
-    
+
     let db_url = std::env::var("DATABASE_URL").unwrap();
     let db: PgPool = PgPoolOptions::new()
         .max_connections(10)
         .connect(&db_url)
-        .await.expect("failed to connect postgres");
-    
+        .await
+        .expect("failed to connect postgres");
+
     // Load dictionary into memory
     let mut d = Dictionary::new();
     let rows = sqlx::query_as!(Latin, "select * from latin")
         .fetch_all(&db)
-        .await.expect("failed to read db");
+        .await
+        .expect("failed to read db");
     let mut count = 0_usize;
     for row in rows {
         let en = row.en;
@@ -80,18 +84,19 @@ async fn main() {
 
     let dict = Arc::new(d);
 
-    Command::repl(
-        bot, 
-        move |bot, msg, cmd| respond(
-            bot, msg, cmd, dl.clone(), db.clone(), dict.clone()
-        )
-    ).await;
+    Command::repl(bot, move |bot, msg, cmd| {
+        respond(bot, msg, cmd, dl.clone(), db.clone(), dict.clone())
+    })
+    .await;
 }
 
 #[derive(BotCommands, Clone)]
-#[command(rename_rule = "lowercase", description = "These commands are supported:")]
+#[command(
+    rename_rule = "lowercase",
+    description = "These commands are supported:"
+)]
 enum Command {
-    #[command(description = "Show help")] 
+    #[command(description = "Show help")]
     H,
     #[command(description = "More info")]
     Info,
@@ -104,27 +109,29 @@ enum Command {
 }
 
 async fn respond(
-    bot: Bot, 
-    msg: Message, 
-    cmd: Command, 
-    dl: DeepLApi, 
+    bot: Bot,
+    msg: Message,
+    cmd: Command,
+    dl: DeepLApi,
     db: PgPool,
     dict: Arc<Dictionary>,
-) -> ResponseResult<()> 
-{
-    if !is_authorized(&msg) { 
-        return Ok(())
+) -> ResponseResult<()> {
+    if !is_authorized(&msg) {
+        return Ok(());
     }
-    
+
     match cmd {
-        Command::H => bot.send_message(msg.chat.id, Command::descriptions().to_string()).await?,
+        Command::H => {
+            bot.send_message(msg.chat.id, Command::descriptions().to_string())
+                .await?
+        }
         Command::Info => {
             let help = "I am Dante, the romantic. I'll tell you whether an English word has roots in the Latin language. /q Where applicable, I include modern analogs for the word of interest (currently \"FR\", \"ES\", & \"IT\"). I can also translate words to and from various languages. /t\n\nSee the commands list for usage and syntax. /h \n\ntips: A query result contains a grammatical part (noun, adj, verb) that refers to the latin root, and not necessarily the english word. However, I will do my best to ensure the 'descendants' correspond grammatically to the english term.\n\nKeep in mind, the 'descendants' aim to capture lexical forms that most closely resemble their latin origin, but since the meaning of words drifts over time, they may no longer track semantically or are seldom used in modern parlance. For more dynamic translations, the translate command should come in handy.\n\nBy the way, we're adding words to the dictionary all the time - let us know if you believe a common English/Latin pair is missing.\n\nOk enough preamble,\nCarpe Diem!";
-            
+
             //let chat_id = msg.chat.id.0;
             //bot.send_message(msg.chat.id, format!("{chat_id}")).await?
             bot.send_message(msg.chat.id, help).await?
-        },            
+        }
         Command::Q => {
             // Iterate over words in text and attempt to pull a row from the database
             // e.g. "/q foo bar absent"
@@ -146,8 +153,9 @@ async fn respond(
                 // search exact
                 let row = sqlx::query_as!(Latin, "SELECT * FROM latin WHERE en = ($1)", en)
                     .fetch_one(&db)
-                    .await.expect("dict entry should return a db row");
-                
+                    .await
+                    .expect("dict entry should return a db row");
+
                 let Latin { id: _, en, la, defn, fr, es, it } = row;
                 format!("Here's what I've got for {en},\nfrom the latin: {la}, {defn}\ndescendants:\nfr {fr}\nes {es}\nit {it}")
             } else {
@@ -156,19 +164,17 @@ async fn respond(
                     Some(latin) => {
                         let Latin { id: _, en, la, defn, fr, es, it } = latin;
                         format!("❔ Meno male, I found something similar: {en},\nfrom the latin: {la}, {defn}\ndescendants:\nfr {fr}\nes {es}\nit {it}")
-                    },
-                    None => {
-                        "None".to_string()
                     }
+                    None => "None".to_string(),
                 }
             };
-            
+
             bot.send_message(msg.chat.id, &reply).await?
-        },
+        }
         Command::T => {
             // Call `translate_text` from deepl api
             let text = msg.text().unwrap();
-            
+
             let reply = match parse_translatable(text) {
                 Err(-1) => "Usage: /t <source lang> <target lang> <text>".to_string(),
                 Err(-2) => "❗️ unknown source lang".to_string(),
@@ -176,11 +182,15 @@ async fn respond(
                 Err(_) => "❗️ unknown error occurred".to_string(), // unreachable assuming we've covered each err code
                 Ok((src, trg, s)) => {
                     log::info!("Requesting translate for {s}");
-                    match dl.translate_text(s, trg).source_lang(src).formality(DEFAULT_FORMALITY).await {
+                    match dl.translate_text(s, trg)
+                        .source_lang(src)
+                        .formality(DEFAULT_FORMALITY)
+                        .await
+                    {
                         Ok(r) => {
                             let trans = r.translations;
                             String::from(&trans[0].text)
-                        },
+                        }
                         Err(e) => {
                             log::debug!("DeepL translate returned an error: {e}");
                             "❗️ bad request. refer to logs".to_string()
@@ -188,9 +198,9 @@ async fn respond(
                     }
                 }
             };
-            
+
             bot.send_message(msg.chat.id, &reply).await?
-        },
+        }
         Command::U => {
             // Get usage stats
             let reply = match dl.get_usage().await {
@@ -198,7 +208,7 @@ async fn respond(
                     let count = resp.character_count;
                     let limit = resp.character_limit;
                     format!("{count} / {limit}")
-                },
+                }
                 Err(e) => {
                     log::debug!("API get_usage returned an error: {e}");
                     "❗️ bad request. refer to logs".to_string()
@@ -211,8 +221,5 @@ async fn respond(
     Ok(())
 }
 
-
 #[cfg(test)]
-
-    mod test;
-
+mod test;
