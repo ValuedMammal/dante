@@ -1,11 +1,12 @@
-// #![allow(unused)]
-use crate::util::{from_dictionary_option, is_query_candidate, parse_translation_candidate, query_greedy};
+//#![allow(unused)]
+use crate::util::{from_dictionary_option, parse_translatable, is_authorized, is_valid_query, query_greedy};
 use deepl::{DeepLApi, Formality};
 use sqlx::postgres::{PgPool, PgPoolOptions};
 use std::collections::HashMap;
 use std::sync::Arc;
 use teloxide::{prelude::*, utils::command::BotCommands};
 
+mod config;
 mod util;
 
 pub struct Latin {
@@ -33,43 +34,32 @@ impl Dictionary {
 
         // initialize all keys/values
         for i in 0_u8..26 {
-            let key = ('a' as u8 + i) as char;
+            let key = (b'a' + i) as char;
             let val: Vec<String> = vec![];
             map.insert(key, val);
         }
         Dictionary { map }
     }
-
-    /// Returns all the dictionary keys whose value is the empty vec
-    #[allow(dead_code)]
-    fn get_empty(&self) -> Vec<char> {
-        let map = &self.map;
-
-        map.iter()
-        .filter(|(_, ref v)| v.len() == 0)
-        .map(|(&k, _)| k)
-        .collect()
-    }
 }
 
-// The global application formality preference
+// The global app formality preference
 const DEFAULT_FORMALITY: Formality = Formality::PreferLess;
 
 #[tokio::main]
 async fn main() {
+    dotenv::dotenv().ok();
     pretty_env_logger::init();
+    
+    let bot = Bot::from_env();
     log::info!("Starting tg bot...");
 
-    let bot = Bot::from_env();
-    let dl = DeepLApi::with(
-        &std::env::var("DEEPL_API_KEY").expect("failed to read api key from env")
-    )
-    .new();
-
-    let db_path = std::env::var("DATABASE_URL").expect("failed to read db path from env");
+    let dl_auth = std::env::var("DEEPL_API_KEY").unwrap();
+    let dl = DeepLApi::with(&dl_auth).new();
+    
+    let db_url = std::env::var("DATABASE_URL").unwrap();
     let db: PgPool = PgPoolOptions::new()
         .max_connections(10)
-        .connect(&db_path)
+        .connect(&db_url)
         .await.expect("failed to connect postgres");
     
     // Load dictionary into memory
@@ -80,7 +70,7 @@ async fn main() {
     let mut count = 0_usize;
     for row in rows {
         let en = row.en;
-        let key = (&en).chars().next().unwrap();
+        let key = en.chars().next().unwrap();
         d.map.get_mut(&key).unwrap().push(en);
         // Ok to unwrap, due to call to dict `new`
         // assumes first char of english words are in ascii [a-z]
@@ -122,16 +112,7 @@ async fn respond(
     dict: Arc<Dictionary>,
 ) -> ResponseResult<()> 
 {
-    fn is_authorized(msg: &Message) -> bool {
-        let chat_id = msg.chat.id.0;
-        let allow = vec![
-            2027093603_i64, // tyler PM
-            -961117056, // lengua group
-        ];
-        allow.contains(&chat_id)
-    }
     if !is_authorized(&msg) { 
-        //bot.send_message(msg.chat.id, "unauthorized").await?;
         return Ok(())
     }
     
@@ -148,20 +129,19 @@ async fn respond(
             // Iterate over words in text and attempt to pull a row from the database
             // e.g. "/q foo bar absent"
             let text = msg.text().unwrap();
-            let words: Vec<String> = if is_query_candidate(text) {
+            let words: Vec<String> = if is_valid_query(text) {
                 let text = text.strip_prefix("/q ").unwrap().to_string();
                 text.split_whitespace().map(|s| s.to_lowercase()).collect()
             } else {
                 vec![]
             };
-            dbg!(words.len());
 
             // See if we have an exact match by searching in-memory dictionary
             let exact = from_dictionary_option(&words, dict.clone());
 
-            let reply = if words.len() == 0 {
+            let reply = if words.is_empty() {
                 // no query candidates to use
-                format!("None")
+                "None".to_string()
             } else if let Some(en) = exact {
                 // search exact
                 let row = sqlx::query_as!(Latin, "SELECT * FROM latin WHERE en = ($1)", en)
@@ -178,7 +158,7 @@ async fn respond(
                         format!("❔ Meno male, I found something similar: {en},\nfrom the latin: {la}, {defn}\ndescendants:\nfr {fr}\nes {es}\nit {it}")
                     },
                     None => {
-                        format!("None")
+                        "None".to_string()
                     }
                 }
             };
@@ -189,11 +169,11 @@ async fn respond(
             // Call `translate_text` from deepl api
             let text = msg.text().unwrap();
             
-            let reply = match parse_translation_candidate(text) {
-                Err(-1) => format!("Usage: /t <source lang> <target lang> <text>"),
-                Err(-2) => format!("❗️ unknown source lang"),
-                Err(-3) => format!("❗️ unknown target lang"),
-                Err(_) => format!("❗️ unknown error occurred"), // unreachable assuming we've covered each err code
+            let reply = match parse_translatable(text) {
+                Err(-1) => "Usage: /t <source lang> <target lang> <text>".to_string(),
+                Err(-2) => "❗️ unknown source lang".to_string(),
+                Err(-3) => "❗️ unknown target lang".to_string(),
+                Err(_) => "❗️ unknown error occurred".to_string(), // unreachable assuming we've covered each err code
                 Ok((src, trg, s)) => {
                     log::info!("Requesting translate for {s}");
                     match dl.translate_text(s, trg).source_lang(src).formality(DEFAULT_FORMALITY).await {
@@ -203,7 +183,7 @@ async fn respond(
                         },
                         Err(e) => {
                             log::debug!("DeepL translate returned an error: {e}");
-                            format!("❗️ bad request. refer to logs")
+                            "❗️ bad request. refer to logs".to_string()
                         }
                     }
                 }
@@ -221,7 +201,7 @@ async fn respond(
                 },
                 Err(e) => {
                     log::debug!("API get_usage returned an error: {e}");
-                    format!("❗️ bad request. refer to logs")
+                    "❗️ bad request. refer to logs".to_string()
                 }
             };
             bot.send_message(msg.chat.id, &reply).await?

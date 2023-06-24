@@ -1,16 +1,29 @@
-// #![allow(unused)]
 use deepl::Lang;
 use lazy_static::lazy_static;
 use regex::Regex;
 use sqlx::PgPool;
-use super::Latin;
-
-use super::Dictionary;
+use super::{
+    config::*,
+    Dictionary, Latin
+};
 use std::sync::Arc;
+use teloxide::types::Message;
+
+// Load regex patterns
+lazy_static!(
+    static ref RE_QUERY: Regex = Regex::new(r"^/q [A-Za-z]{2,}").unwrap();
+    // starts with at least 2 ascii char
+
+    static ref RE_TRANS: Regex = Regex::new(r"^/t ([A-Za-z]{2})[, ]([A-Za-z\-]{2,5}) ([\w.!?'\u2019]{2}[\w.!?'\u2019 ]+)$").unwrap();
+    // alt: unicode ranges [\u0020-\u007F\u00C0-\u00FF]
+    // allow ascii, latin, and whitespace. \u2019 is non-ascii apostrophe
+    // TODO: check user didn't send all whitespace
+    // TODO: support omitting source lang 
+);
 
 /// If option is Some, returns a reference to the matching element in `words`
 pub fn from_dictionary_option(words: &Vec<String>, dict: Arc<Dictionary>) -> Option<&str> {
-    if words.len() == 0 { return None }
+    if words.is_empty() { return None }
     
     for w in words {
         let key = w.chars().next().unwrap();
@@ -24,37 +37,26 @@ pub fn from_dictionary_option(words: &Vec<String>, dict: Arc<Dictionary>) -> Opt
 }
 
 /// Validates a query candidate
-pub fn is_query_candidate(str: &str) -> bool {
-    lazy_static!(
-        static ref RE: Regex = Regex::new(r"^/q [A-Za-z]{2,}").unwrap();
-        // starts with at least 2 ascii char
-    );
-    RE.is_match(str)
+pub fn is_valid_query(str: &str) -> bool {
+    RE_QUERY.is_match(str)
 }
 
-/// Attempts to parse a target lang and word/phrase to send to the translator
-pub fn parse_translation_candidate(text: &str) -> Result<(Lang, Lang, String), i32> {
-    lazy_static!(
-        static ref RE: Regex = Regex::new(r"^/t ([A-Za-z]{2})[, ]([A-Za-z\-]{2,5}) ([\S&&[\u0020-\u007F\u00C0-\u00FF]{2}][\u0020-\u007F\u00C0-\u00FF\s]*)$").unwrap();
-        // phrase allows ascii, latin-1, and whitespace
-        // must start with at least two non-space chars
-        // TODO: support omitting source lang 
-    );
-
-    let Some(caps) = RE.captures(text) else {
+/// Attempts to parse a target lang and string to send to the translator
+pub fn parse_translatable(text: &str) -> Result<(Lang, Lang, String), i32> {
+    let Some(caps) = RE_TRANS.captures(text) else {
         return Err(-1)
     };
     
-    let src = (&caps[1]).to_uppercase();
+    let src = caps[1].to_uppercase();
     let Ok(src_lang) = Lang::try_from(&src) else {
         return Err(-2)
     };
-    let trg = (&caps[2]).to_uppercase();
+    let trg = caps[2].to_uppercase();
     let Ok(trg_lang) = Lang::try_from(&trg) else {
         return Err(-3)
     };
     
-    let phrase = String::from(&caps[3]);
+    let phrase = caps[3].to_string();
     Ok((src_lang, trg_lang, phrase))
 }
 
@@ -62,10 +64,9 @@ pub fn parse_translation_candidate(text: &str) -> Result<(Lang, Lang, String), i
 pub async fn query_greedy(words: Vec<String>, db: PgPool) -> Option<Latin> {
     let mut row: Option<Latin> = None;
 
-    let mut iter = words.iter();
     let mut count = 0_usize;
     
-    while let Some(s) = iter.next() {
+    for s in &words {
         if row.is_some() { break } // success
         
         // get owned value
@@ -83,14 +84,14 @@ pub async fn query_greedy(words: Vec<String>, db: PgPool) -> Option<Latin> {
                 .await.expect("failed to read db");
             count += 1;
             
-            if row.is_some() { break } else {
-                // pop last char and rebuild query
-                let _ = en.pop();
-                q.clear();
-                q.push('%');
-                q.push_str(&en);
-                q.push('%');
-            }
+            if row.is_some() { break }
+            
+            // pop last char and rebuild query
+            let _ = en.pop();
+            q.clear();
+            q.push('%');
+            q.push_str(&en);
+            q.push('%');
         }
     }
     if let Some(latin) = row {
@@ -101,5 +102,10 @@ pub async fn query_greedy(words: Vec<String>, db: PgPool) -> Option<Latin> {
         log::info!("{count} queries returned None for {words:?}");
         None
     }
+}
+
+pub fn is_authorized(msg: &Message) -> bool {
+    let chat_id: i64 = msg.chat.id.0;
+    ALLOW.contains(&chat_id)
 }
     
