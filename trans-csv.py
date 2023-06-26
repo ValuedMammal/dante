@@ -1,28 +1,22 @@
-## Create postgres-compatible csv for table `latin`,
-## swapping comma delimiters for semicolon
-##      but retain ',' in defn column
-##
-## e.g. from:
-##      1,absent,absens,"(adj) foo; not present",absent,ausente,assente
-## to   1;absent;absens;(adj) foo, not present,absent;ausente;assente
-##
+"""
+Create postgres-compatible csv for table `latin`, swapping comma delimiters for semicolon,
+but keeping any ',' in the definition. Also we don't need the double quotes.
+e.g. from:
+    1,absent,absens,"(adj) foo; not present",absent,ausente,assente
+to:
+    1;absent;absens;(adj) foo, not present,absent;ausente;assente
+"""
 
 import re
 
-# Approach
-# replace all comma with semicolon
-# remove double quotes
-# in the defn string, replace any semicolon with comma
-# concat capture groups into string and collect
-
-# tests
+# debug
 # a = '1,absent,absens,"(adj) not present",absent,ausente,assente' # basic
-# b = '1,absent,absens,"(adj) foo, not present",absent,ausente,assente' # 2 element defn
+# b = '1,absent,absens,"(adj) foo, not present",absent,ausente,assente' # comma in the defn
 # c = '1,absent,absens,"(adj) foo; not present",absent,ausente,assente' # ';' in the defn
-# d = '2,accelerate,accelerare,"(v) speed up, quicken",accélérer,acelerar,accelerare' # diacritics in last 3 elems
+# d = '2,accelerate,accelerare,"(v) speed up, quicken",accélérer,acelerar,accelerare' # diacritics in last 3 col
 # lines = [a, b, c, d]
 
-p = re.compile('^([\da-z;\s]+)"([()a-z;\s\-]+)"([a-z();\s\u00C0-\u017F]+)$')
+pat = re.compile('^([\da-z;\s]+)"([()a-z;\s\-]+)"([a-z();\s\u00C0-\u017F]+)$')
 # group 1: id,en,la # note \d for digit
 # group 2: defn
 # group 3: fr,es,it # note range of extra latin char
@@ -37,24 +31,20 @@ for src in lines:
     # replace all comma
     src = src.replace(',', ';')
 
-    match = re.match(p, src)
+    match = re.match(pat, src)
     if match is None:
         print(src)
         exit(1)
 
-    # strip quotes
-    # note: can simply capture inside the quotes in regex?
-    defn: str = match.group(2)
-    # defn = defn.strip('"') # redundant
-
     # replace semicolon in defn
+    defn = match.group(2)
     defn = defn.replace(';', ',')
 
     # make string
-    pre: str = match.group(1)
-    post: str = match.group(3)
+    pre = match.group(1)
+    post = match.group(3)
     
-    s: str = pre + defn + post
+    s = pre + defn + post
     out.append(s)
 
 # Write out
