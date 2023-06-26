@@ -15,8 +15,8 @@ fn valid_query() {
     assert!(is_valid_query(raw));
 }
 
-#[tokio::test]
-async fn valid_translatable() {
+#[test]
+fn valid_translatable() {
     // syntax: /t src_lang trg_lang text
     let test_vec: Vec<(&str, (Lang, Lang, String))> = vec![
         (
