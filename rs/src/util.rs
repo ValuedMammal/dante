@@ -11,7 +11,7 @@ lazy_static!(
     static ref RE_QUERY: Regex = Regex::new(r"^/q [A-Za-z]{2,}").unwrap();
     // starts with at least 2 ascii char
 
-    static ref RE_TRANS: Regex = Regex::new(r"^/t ([A-Za-z]{2})[, ]([A-Za-z\-]{2,5}) ([\w.!?'\u2019]{2}[\w.!?'\u2019 ]+)$").unwrap();
+    static ref RE_TRANS: Regex = Regex::new(r"^/t ([A-Za-z]{2})[, ]([A-Za-z\-]{2,5}) ([\w,.!?'\u2019]{2}[\w,.!?'\u2019 ]+)$").unwrap();
     // alt: unicode ranges [\u0020-\u007F\u00C0-\u00FF]
     // allow ascii, latin, and whitespace. \u2019 is non-ascii apostrophe
     // TODO: check user didn't send all whitespace

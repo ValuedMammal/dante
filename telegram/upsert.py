@@ -15,7 +15,7 @@ Usage, assuming the file temp.csv with a single line:
 
 import sys
 from sqlalchemy import create_engine, text
-import config
+from config import config
 
 # Read line from stdin
 s = sys.stdin.read()
