@@ -35,14 +35,11 @@ As far as the database is concerned, we could simply add rows to pglatin.csv and
     - Using psql, execute `\copy latin from temp-pglatin.csv with delimiter ';';`
     - At this point, latin.csv, pglatin.csv, and the database should match. Both temporary files (temp-latin.csv, temp-pglatin.csv) can be safely removed.
     - Note: we can easily run trans-csv.py on the entire latin.csv (by modifying the in/out file names), generating a new pglatin.csv, then run psql copy with a where clause as stated above. Though in principle it saves cpu to only operate on the diff rather than repeatedly crunch existing rows, plus we avoid manipulating the master copies. 
-- Things to be aware of: make sure id column numbers remain consistent, with no duplicates, as this is the table primary key. in addition, the column for the english word is defined to be unique by the schema, so no duplicates allowed there either. See the schema.
+- Things to be aware of: make sure id column numbers remain consistent, with no duplicates, as this is the table primary key. in addition, the column for the english word is defined to be unique by the schema, so no duplicates allowed there either. See the [schema](/rs/schema.sql).
 - New csv rows should always be appended to the end, no need to alphabetize.
 - If you need to remove a row of the csv from somewhere in the middle: take the current last row and put it in place of the row to be removed, leaving the id column unchanged to preserve continuity. After that, you'll need to emit psql statements on the affected rows (updating one and deleting another). In case of serious discrepancy, defer to the csv as canonical - we can always drop the db table and begin afresh.
 
 ### Can be added to latin csv
-annul  
-nuptial  
-nubile  
 decadent  
 assiduous  
 dubious  
@@ -82,7 +79,7 @@ rule regula
 nephew nepotism  
 rude  
 erudite  
-volition  
+volition, voluntary  
 serum  
 signal  
 conduct  
@@ -96,3 +93,5 @@ vent
 case/casette/chasse  
 vowel  
 letter  
+enormous  
+enigma  

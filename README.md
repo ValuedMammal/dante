@@ -13,13 +13,12 @@ This is not an ai. It's currently just a database and web requester
 - rust/postgres uses teloxide, tokio, deepl crate (async)
 - py/postgres work in progress.
 
-Contributions welcome. See [contribution guidelines](/contributing.md).
+Contributions welcome. See [contributing guidelines](/contributing.md).
 
 ## App Wishlist:
 -------
-- allow optionally passing source lang (currently required to include both source and target languages - it's often better to be explicit, but indeed requires more keystrokes). This can probably be done by testing an additional regex pattern
 - test web request to wordsense.eu in python
-    - dynamically add db rows when a new eng/latin pair is discovered
+- dynamically add db rows when a new eng/latin pair is discovered
 - consider using webhooks
 - prompting interface, python LLM ?
 - add more quirky comments, a la 'Carpe diem'
