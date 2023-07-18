@@ -40,12 +40,6 @@ As far as the database is concerned, we could simply add rows to pglatin.csv and
 - If you need to remove a row of the csv from somewhere in the middle: take the current last row and put it in place of the row to be removed, leaving the id column unchanged to preserve continuity. After that, you'll need to emit psql statements on the affected rows (updating one and deleting another). In case of serious discrepancy, defer to the csv as canonical - we can always drop the db table and begin afresh.
 
 ### Can be added to latin csv
-decadent  
-assiduous  
-dubious  
-reputation repute  
-grace  
-inferior  
 disaster - 'ill-starred event'  
 none/null  
 laudable  
