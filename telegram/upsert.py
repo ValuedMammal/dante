@@ -21,7 +21,11 @@ from config import config
 s = sys.stdin.read()
 l = s.split(';')
 
-# Fail if format is incorrect
+# Optionally get user-passed row id,
+# and check vector len
+row_id = None
+if len(l) == 7:
+    row_id = int(l.pop(0))
 assert len(l) == 6
 
 # note: id column not present
@@ -30,7 +34,7 @@ la = l[1]
 defn = l[2]
 fr = l[3]
 es = l[4]
-it = l[5]
+it = l[5].rstrip()
 
 # Connect db
 url = config["db_url"]
@@ -40,7 +44,7 @@ action = ""
 with ngin.connect() as db:
     # query for existing row
     latin_id = db.execute(
-        text('SELECT id FROM latin WHERE en =:w'), {'w': en}
+        text('SELECT id FROM latin WHERE en =:s'), {'s': en}
     ).scalar_one_or_none()
     
     # Insert
@@ -61,6 +65,10 @@ with ngin.connect() as db:
     
     # Update
     else:
+        # primary key integrity check if user gave id
+        if row_id != None and latin_id != row_id:
+            print(f"WARN row id mismatch expected {row_id}, found {latin_id}")
+
         row = (en, la, defn, fr, es, it)
         db.execute(
             text('UPDATE latin SET (en, la, defn, fr, es, it) =:tup WHERE id =:i'), {'tup': row, 'i': latin_id}
