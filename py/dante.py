@@ -1,14 +1,15 @@
 import telebot
 import re
 import deepl
-from util import get_db, is_authorized, is_a_word
+from util import get_db, is_authorized, is_word
 import logging as log
 
 from config import config
 
 DB_PATH = "chat.db"
 BOT_AUTH = config["tg"]
-L_AUTH = config["deepl"]
+DEEPL_AUTH = config["deepl"]
+
 bot = telebot.TeleBot(BOT_AUTH)
 log.basicConfig(filename="dante.log", encoding="utf-8", level=log.INFO)
 log.info("Starting tg bot...")
@@ -55,7 +56,7 @@ conn.close()
 log.info("Loaded dictionary")
 
 # Create instance of translator
-dl = deepl.Translator(L_AUTH)
+dl = deepl.Translator(DEEPL_AUTH)
 
 
 @bot.message_handler(commands=['start', 'help'])
@@ -87,7 +88,7 @@ def query(msg):
     en = None
     for w in words:
         w = w.lower()
-        if not is_a_word(w): continue
+        if not is_word(w): continue
         first = w[0]
         if w in latins[first]:
             en = w
@@ -110,6 +111,7 @@ def query(msg):
     
     bot.send_message(msg.chat.id, reply)
 
+
 @bot.message_handler(commands=['t'])
 def translate(msg):
     """Calls the DeepL API for translation."""
@@ -126,9 +128,9 @@ def translate(msg):
         return
     _cmd = words.pop(0)
     trg = words.pop(0)
-    
+
     # Remake query string
-    # note: can we extract it with regexp?
+    # TODO: use a regex to capture query string
     q = ''
     for w in words:
         q += f"{w} "
@@ -148,22 +150,6 @@ def translate(msg):
     finally:
         bot.send_message(msg.chat.id, reply)
 
-@bot.message_handler(commands=['p'])
-def prompt(msg):
-    """Prompts the bot for an intelligent response"""
-
-    default = "unimplemented"
-
-    # lorem ipsum easter egg
-    if re.search('/p lorem ipsum', msg.text) != None:
-        reply = "You must be flattering me."
-    else:
-        reply = default
-
-    # TODO: implement LLM
-    
-    bot.reply_to(msg, reply)
-    
 
 @bot.message_handler(commands=['id'])
 def get_chat_id(msg):
@@ -178,11 +164,6 @@ bot.infinity_polling()
 # def get_me(msg):
 #     reply = bot.get_me()
 #     bot.reply_to(msg, reply.id)
-
-## Gnu/Linux suggester
-# @bot.message_handler(regexp='linux')
-# def gnu_linux(message):
-#     bot.reply_to(message, "You mean GNU/Linux?")
 
 ## Test echo message
 # @bot.message_handler(func=lambda message: True)
