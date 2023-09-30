@@ -8,20 +8,15 @@ general UI:
 - share with language teachers/learners  
 
 implementation:  
-This is not an ai. It's currently just a database and web requester
-- python/sqlite prototype. uses pyTelegramBotApi, py deepl
-- rust/postgres uses teloxide, tokio, deepl crate (async)
-- py/postgres work in progress.
+- This is not an ai. It's currently just a database and web requester.  
+- The [current implementation](./rs) uses crates [teloxide](https://docs.rs/teloxide/) and [deepl](https://docs.rs/deepl/) 
 
-Contributions welcome. See [contributing guidelines](/contributing.md).
+Contributions welcome. See [contributing guidelines](./contributing.md).
 
 ## App Wishlist:
 -------
-- test web request to wordsense.eu in python
-- dynamically add db rows when a new eng/latin pair is discovered
-- consider using webhooks
+- consider using webhooks instead of long polling
 - prompting interface, python LLM ?
 - add more quirky comments, a la 'Carpe diem'
 - add portuguese and romanian
-- performance considerations
 - CI, deployment
