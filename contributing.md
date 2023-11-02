@@ -1,5 +1,5 @@
 ### Contributing
-We encourage anyone to suggest fixes and improvements to the app, particularly when it comes to adding entries to our dictionary of Latin words. There is an [ongoing list](#can-be-added-to-latin-csv) at the bottom of the page of potential words to be added. Some common action steps are:
+We encourage anyone to suggest fixes and improvements to the app, particularly when it comes to adding entries to our dictionary of Latin words. There is a [growing list](#can-be-added-to-latin-csv) at the bottom of the page of potential words to be added. Some common action steps are:
 - If you're familiar with github
     - you can submit a pull request modifying the main latin.csv here on github, or submit other code changes
     - you can create an issue in this repo describing any problems you noticed with the telegram bot.
@@ -7,18 +7,20 @@ We encourage anyone to suggest fixes and improvements to the app, particularly w
 
 The beauty of language is that by studying the history of a word, you very often find a slew of related words that are equally fascinating. Granted there are more possible words out there than we can possibly keep track of, and there are many dictionaries and resources on the web already, but we think the value Dante brings is to consolidate useful information into a multi-lingual experience that facilitates learning and social interaction.
 
-The only stipulation to expanding our existing dictionary collection is that the word should exist in English today and have a clear etymology that stems from Latin. Ideally there also exists a range of decendants and analogs in modern romance languages, but if no analogs are found in French for example, it's ok to simply put 'unknown' in the column. Naturally, we'd prefer that new rows to the csv have all columns completed (none left blank) before pushing updates. See [latin.csv](/latin.csv) for examples.
+The only stipulation to expanding our existing dictionary collection is that **the word should exist in English today and have a clear etymology that stems from Latin.** Ideally there also exists a range of decendants and analogs in modern romance languages, but if no analogs are found in French for example, it's ok to simply put 'unknown' in the column. Naturally, we'd prefer that new rows to the csv have all columns completed (none left blank) before pushing updates. See [latin.csv](/latin.csv) for examples.
 
 ### Dictionary approach:
 -------
 - There's a unique constraint on the english word, as this is the primary search term. That means the same word can't appear in more than one row, but again this only applies to the english word column.
-- From Dante help: "modern analogs aim to capture lexical forms that most closely resemble their latin origin, but because the meaning of words drifts over time, they may no longer track semantically, or are seldom used in modern parlance." give an example ?  
+- Match the structure of words, not the semantics. 
+    - From Dante's help: *"Modern analogs aim to capture lexical forms that most closely resemble their latin origin, but because the meaning of words drifts over time, they may no longer track semantically, or are seldom used in modern parlance."* 
+    - For example, words A and B may share an origin with latin word C, but A and B may not mean the same thing today, and it's possible neither have the original meaning of C.
 - For latin roots: generally try to match the grammar of the english term. In cases of ambiguity (which is most cases), go with what feels familiar, or where better translations exist.
 - Prefer verbs over adjectives. Prefer the noun when it can be clearly deduced by the etymology 
     - e.g. aquatic, from the latin: aqua, (n) water
-- Latin verbs: prefer -are -ere -ire endings, i.e. the present active infinitive
-- Ok to include two terms in one column of analogs [fr, es, it] separated by a space
-- Adjectives: gender normally follows masculine or neuter -  for no reason other than laziness or consistency
+- Latin verbs: prefer *-are, -ere, -ire* endings, i.e. the present active infinitive
+- Ok to include two or three (single space separated) terms in one column of analogs.
+- Adjectives: for consistency, gender normally follows masculine or neuter.
 
 ### For maintainers - procedure for adding db rows
 -------
@@ -34,50 +36,51 @@ As far as the database is concerned, we could simply add rows to pglatin.csv and
     - Run `py trans-csv.py` (where py is an alias for python3). The script will look for temp-latin.csv in the same directory and output the file temp-pglatin.csv. In case of formatting issue, the script will fail and dump the offending row to the console for debugging. The newly formatted rows will need to be appended to the master pglatin.csv, e.g. `cat temp-pglatin.csv >> pglatin.csv`.
     - Using psql, execute `\copy latin from temp-pglatin.csv with delimiter ';';`
     - At this point, latin.csv, pglatin.csv, and the database should match. Both temporary files (temp-latin.csv, temp-pglatin.csv) can be safely removed.
-    - Note: we can easily run trans-csv.py on the entire latin.csv (by modifying the in/out file names), generating a new pglatin.csv, then run psql copy with a where clause as stated above. Though in principle it saves cpu to only operate on the diff rather than repeatedly crunch existing rows, plus we avoid manipulating the master copies. 
+    - Note: we can easily run trans-csv.py on the entire latin.csv (by modifying the in/out file names), generating a new pglatin.csv, then run psql copy with a where clause as stated above. - though in principle it saves cpu to only operate on the diff rather than repeatedly crunch existing rows, plus we avoid manipulating the master copies. 
 - Things to be aware of: make sure id column numbers remain consistent, with no duplicates, as this is the table primary key. in addition, the column for the english word is defined to be unique by the schema, so no duplicates allowed there either. See the [schema](/rs/schema.sql).
 - New csv rows should always be appended to the end, no need to alphabetize.
-- If you need to remove a row of the csv from somewhere in the middle: take the current last row and put it in place of the row to be removed, leaving the id column unchanged to preserve continuity. After that, you'll need to emit psql statements on the affected rows (updating one and deleting another). In case of serious discrepancy, defer to the csv as canonical - we can always drop the db table and begin afresh.
+- If you need to remove a csv row from somewhere in the middle, use the *remove-swap-last* technique, that is, take the current last row and put it in place of the row to be removed, leaving the id column unchanged to preserve continuity. After that, you'll need to emit psql statements on the affected rows (updating one and deleting another). In case of serious discrepancy, defer to the csv as canonical - we can always drop the db table and begin afresh.
 
 ### Can be added to latin csv
-sanctuary  
-obfuscate  
-vulgar  
-ovum  
-parsimony  
-penultimate  
+affable  
+case/casette/chasse  
+command, commend  
+conduct  
+coy  
+enormous  
+enigma  
+erudite  
+eclipse  
 famine  
 genial/gentile  
 impudent  
 irascible  
+letter  
+meticulous  
+nephew nepotism  
+ointment  
+ovum  
+parsimony  
+penultimate  
 please/pleasure piacere  
 peace  
-affable  
 price pretium  
 provenance  
 persuade  
 acquiesce  
-coy  
 reason ratio  
 royal  
 rule regula  
-nephew nepotism  
 rude  
-erudite  
-volition, voluntary  
+scenario  
 serum  
 signal  
-conduct  
 tavern  
 tangible  
 terrarium  
-ointment  
+tribunal  
 valor  
 valiant  
 vent  
-case/casette/chasse  
+volition, voluntary  
 vowel  
-letter  
-enormous  
-enigma  
-command, commend  
