@@ -1,10 +1,9 @@
-use super::{config::*, Dictionary, Latin};
+use super::{config::*, Dictionary, Error, Latin};
 use deepl::Lang;
 use lazy_static::lazy_static;
 use regex::Regex;
 use sqlx::PgPool;
 use std::sync::Arc;
-use teloxide::types::Message;
 
 // Load regex patterns
 lazy_static!(
@@ -12,24 +11,21 @@ lazy_static!(
     // starts with at least 2 ascii char
 
     static ref RE_TRANS: Regex = Regex::new(r"^/t ([A-Za-z]{2})[, ]([A-Za-z\-]{2,5}) ([\w,.!?'\u2019]{2}[\w,.!?'\u2019 ]+)$").unwrap();
-    // alt: unicode ranges [\u0020-\u007F\u00C0-\u00FF]
     // allow ascii, latin, and whitespace. \u2019 is non-ascii apostrophe
-    // TODO: check user didn't send all whitespace
+    // alternatively: unicode ranges [\u0020-\u007F\u00C0-\u00FF]
     // TODO: support omitting source lang
 );
 
-/// If option is Some, returns a reference to the matching element in `words`
-pub fn from_dictionary_option(words: &Vec<String>, dict: Arc<Dictionary>) -> Option<&str> {
+/// Returns a reference to the first matching entry in `dict` if it exists, else `None`
+pub fn try_from_dictionary(words: &[String], dict: Arc<Dictionary>) -> Option<&str> {
     if words.is_empty() {
         return None;
     }
 
-    for w in words {
-        let key = w.chars().next().unwrap();
-        if dict.map.get(&key).unwrap().contains(w) {
-            // Ok to unwrap, as `Dictionary::new` populates all keys,
-            // and `is_query_candidate` constrains `words` to ascii only
-            return Some(w);
+    for word in words {
+        let key = word.chars().next().expect("char is some");
+        if dict.map.get(&key).expect("key exist").contains(word) {
+            return Some(word);
         }
     }
     None
@@ -41,79 +37,73 @@ pub fn is_valid_query(str: &str) -> bool {
 }
 
 /// Attempts to parse a target lang and string to send to the translator
-pub fn parse_translatable(text: &str) -> Result<(Lang, Lang, String), i32> {
+pub fn parse_translatable(text: &str) -> Result<(Lang, Lang, String), Error> {
     let Some(caps) = RE_TRANS.captures(text) else {
-        return Err(-1)
+        return Err(Error::Usage);
     };
 
     let src = caps[1].to_uppercase();
-    let Ok(src_lang) = Lang::try_from(&src) else {
-        return Err(-2)
-    };
     let trg = caps[2].to_uppercase();
-    let Ok(trg_lang) = Lang::try_from(&trg) else {
-        return Err(-3)
-    };
-
     let phrase = caps[3].to_string();
+
+    let src_lang = Lang::try_from(&src).map_err(|e| Error::Language(e))?;
+    let trg_lang = Lang::try_from(&trg).map_err(|e| Error::Language(e))?;
+
     Ok((src_lang, trg_lang, phrase))
 }
 
 /// Recursively searches the text, including substrings, for a similar row
+/// using `LIKE %str%` syntax. Note, we return a row if the query resembles
+/// a word from either the english or latin column
 pub async fn query_greedy(words: Vec<String>, db: PgPool) -> Option<Latin> {
     let mut row: Option<Latin> = None;
 
-    let mut count = 0_usize;
+    // track number of query attempts
+    let mut count = 0usize;
 
-    for s in &words {
+    for mut s in words.iter().cloned() {
         if row.is_some() {
             break;
         }
 
-        // get owned value
-        let mut en = String::from(s);
-
         // wrap query in '%'
-        let mut q = String::from('%');
-        q.push_str(&en);
-        q.push('%');
+        let mut query = format!("%{}%", &s);
 
-        while en.len() > 1 {
-            // limit substring to at least 2 char
+        // limit substring to at least 2 char
+        while s.len() > 1 {
             row = sqlx::query_as!(
                 Latin,
                 "SELECT * FROM latin WHERE en LIKE ($1) OR la LIKE ($1)",
-                q
+                query
             )
             .fetch_optional(&db)
             .await
-            .expect("failed to read db");
-            count += 1;
+            .expect("execute query");
 
+            count += 1;
             if row.is_some() {
                 break;
             }
-
             // pop last char and rebuild query
-            let _ = en.pop();
-            q.clear();
-            q.push('%');
-            q.push_str(&en);
-            q.push('%');
+            s.pop();
+            query = format!("%{}%", &s);
         }
     }
-    
-    if let Some(latin) = row {
-        let en = &latin.en;
-        log::info!("Found result for {en} in {count} queries");
-        Some(latin)
-    } else {
-        log::info!("{count} queries returned None for {words:?}");
-        None
-    }
+
+    let info = match row {
+        Some(ref latin) => {
+            let en = &latin.en;
+            format!("Found result for {en} in {count} queries")
+        }
+        None => format!("{count} queries returned None for {words:?}"),
+    };
+
+    log::info!("{info}");
+    row
 }
 
-pub fn is_authorized(msg: &Message) -> bool {
+/// Whether the given `msg` comes from an authorized chat id
+pub fn is_authorized(msg: &teloxide::types::Message) -> bool {
     let chat_id: i64 = msg.chat.id.0;
     ALLOW.contains(&chat_id)
 }

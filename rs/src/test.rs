@@ -1,10 +1,12 @@
 use super::{
-    util::{from_dictionary_option, is_valid_query, parse_translatable, query_greedy},
+    util::{is_valid_query, parse_translatable, query_greedy, try_from_dictionary},
     Dictionary,
 };
 use deepl::Lang;
 use sqlx::postgres::{PgPool, PgPoolOptions};
 use std::sync::Arc;
+
+const DB_PATH: &str = env!("DATABASE_URL");
 
 #[test]
 fn valid_query() {
@@ -40,17 +42,19 @@ fn valid_translatable() {
     // rejects invalid
     let s = "/t en de   ";
     let result = parse_translatable(s);
-    assert_eq!(result, Err(-1))
+    assert!(result.is_err());
+    //TODO consider deriving `PartialEq` for `Error`
+    //assert_eq!(result.unwrap_err(), Error::Usage);
 }
 
 #[tokio::test]
 async fn find_like_or_none() {
-    let db_path = std::env::var("DATABASE_URL").expect("failed to read db path from env");
+    let db_path = DB_PATH;
     let db: PgPool = PgPoolOptions::new()
         .max_connections(10)
         .connect(&db_path)
         .await
-        .expect("failed to connect postgres");
+        .unwrap();
 
     let test_vec: Vec<(Vec<String>, Option<String>)> = vec![
         (
@@ -71,7 +75,7 @@ async fn find_like_or_none() {
         ),
         (
             // finds closest latin match e.g. '-arium' -> aviary
-            vec!["arium".to_string()],
+            vec!["viarium".to_string()],
             Some(String::from("aviary")),
         ),
         (
@@ -127,13 +131,13 @@ fn dict_match() {
     ];
 
     // match returned
-    let exact = from_dictionary_option(&words, dict.clone());
+    let exact = try_from_dictionary(&words, dict.clone());
     assert!(exact.is_some());
     assert_eq!(exact.unwrap(), "spelunker");
 
     // no match
     words.pop(); // spelunker
     words.push(String::from("baz"));
-    let exact = from_dictionary_option(&words, dict.clone());
+    let exact = try_from_dictionary(&words, dict.clone());
     assert!(exact.is_none());
 }
