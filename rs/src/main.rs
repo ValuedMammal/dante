@@ -38,7 +38,7 @@ pub struct Dictionary {
 #[derive(Debug)]
 pub enum Error {
     Database(sqlx::Error),
-    Language(deepl::LangConvertError),
+    Language(String),
     Usage,
 }
 
@@ -57,12 +57,6 @@ impl Dictionary {
     }
 }
 
-impl From<deepl::LangConvertError> for Error {
-    fn from(e: deepl::LangConvertError) -> Self {
-        Self::Language(e)
-    }
-}
-
 impl From<sqlx::Error> for Error {
     fn from(e: sqlx::Error) -> Self {
         Self::Database(e)
@@ -72,9 +66,9 @@ impl From<sqlx::Error> for Error {
 impl fmt::Display for Error {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         let s = match self {
-            Self::Usage => "Usage: /t <source lang> <target lang> <text>".to_string(),
-            Self::Language(deepl::LangConvertError::InvalidLang(e)) => e.to_string(),
             Self::Database(e) => e.to_string(),
+            Self::Usage => "Usage: /t <source lang> <target lang> <text>".to_string(),
+            Self::Language(e) => format!("❔ Unrecognized language: {e}"),
         };
         f.write_str(&s)
     }
@@ -112,6 +106,7 @@ async fn main() -> Result<(), Error> {
     }
     log::info!("Loaded {count} dictionary entries");
 
+    //TODO move this to `Dictionary::new` ?
     let dict = Arc::new(d);
 
     Command::repl(bot, move |bot, msg, cmd| {
@@ -170,7 +165,7 @@ async fn respond(
         Command::Q => {
             let text = msg.text().expect("msg text");
             let words: Vec<String> = if is_valid_query(text) {
-                let text = text.strip_prefix("/q ").expect("has prefix").to_string();
+                let text = text.strip_prefix("/q ").expect("strip prefix").to_string();
                 text.split_whitespace().map(|s| s.to_lowercase()).collect()
             } else {
                 vec![]
@@ -207,8 +202,8 @@ async fn respond(
         }
         // Translate text
         Command::T => {
-            let text = msg.text().unwrap();
-
+            let text = msg.text().expect("msg text");
+            
             let reply = match parse_translatable(text) {
                 Err(e) => e.to_string(),
                 Ok((src, trg, s)) => {
@@ -219,12 +214,12 @@ async fn respond(
                         .formality(DEFAULT_FORMALITY)
                         .await
                     {
-                        Ok(r) => {
-                            let trans = r.translations;
-                            String::from(&trans[0].text)
+                        Ok(res) => {
+                            let translation = &res.translations[0];
+                            translation.text.to_string()
                         }
                         Err(e) => {
-                            log::debug!("DeepL translate returned an error: {e}");
+                            log::error!("DeepL translate: {e}");
                             "❗️ bad request. refer to logs".to_string()
                         }
                     }
@@ -242,7 +237,7 @@ async fn respond(
                     format!("{count} / {limit}")
                 }
                 Err(e) => {
-                    log::debug!("DeepL usage returned an error: {e}");
+                    log::error!("DeepL usage: {e}");
                     "❗️ bad request. refer to logs".to_string()
                 }
             };

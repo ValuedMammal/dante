@@ -39,7 +39,7 @@ fn valid_translatable() {
         assert_eq!(result.unwrap(), t.1);
     }
 
-    // rejects invalid
+    // rejects empty text
     let s = "/t en de   ";
     let result = parse_translatable(s);
     assert!(result.is_err());

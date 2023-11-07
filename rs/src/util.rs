@@ -10,10 +10,12 @@ lazy_static!(
     static ref RE_QUERY: Regex = Regex::new(r"^/q [A-Za-z]{2,}").unwrap();
     // starts with at least 2 ascii char
 
-    static ref RE_TRANS: Regex = Regex::new(r"^/t ([A-Za-z]{2})[, ]([A-Za-z\-]{2,5}) ([\w,.!?'\u2019]{2}[\w,.!?'\u2019 ]+)$").unwrap();
+    static ref RE_TRANS: Regex = Regex::new(r"^/t ([A-Za-z]{2})[, ]([A-Za-z\-]{2,5}) ([\w\s\u2000-\u206F\u0020-\u00FF]+)$").unwrap();
     // allow ascii, latin, and whitespace. \u2019 is non-ascii apostrophe
     // alternatively: unicode ranges [\u0020-\u007F\u00C0-\u00FF]
-    // TODO: support omitting source lang
+    //\u2000-\u206F general puntuation
+    //\u0020-\u00FF latins
+    // TODO: support omitting source lang?
 );
 
 /// Returns a reference to the first matching entry in `dict` if it exists, else `None`
@@ -43,11 +45,22 @@ pub fn parse_translatable(text: &str) -> Result<(Lang, Lang, String), Error> {
     };
 
     let src = caps[1].to_uppercase();
-    let trg = caps[2].to_uppercase();
-    let phrase = caps[3].to_string();
+    let mut trg = caps[2].to_uppercase();
+    let phrase = caps[3].trim_start().to_string();
+    if phrase.is_empty() {
+        return Err(Error::Usage);
+    }
 
-    let src_lang = Lang::try_from(&src).map_err(|e| Error::Language(e))?;
-    let trg_lang = Lang::try_from(&trg).map_err(|e| Error::Language(e))?;
+    // add missing hyphen to target lang,
+    // e.g. ENUS -> EN-US
+    if trg.len() == 4 {
+        let lang = &trg[..2];
+        let region = &trg[2..];
+        trg = format!("{lang}-{region}");
+    }
+
+    let src_lang = Lang::try_from(&src).map_err(|_| Error::Language(src))?;
+    let trg_lang = Lang::try_from(&trg).map_err(|_| Error::Language(trg))?;
 
     Ok((src_lang, trg_lang, phrase))
 }
