@@ -1,10 +1,11 @@
+use std::collections::HashMap;
+
 use super::{
     util::{is_valid_query, parse_translatable, query_greedy, try_from_dictionary},
     Dictionary,
 };
 use deepl::Lang;
 use sqlx::postgres::{PgPool, PgPoolOptions};
-use std::sync::Arc;
 
 const DB_PATH: &str = env!("DATABASE_URL");
 
@@ -101,28 +102,13 @@ async fn find_like_or_none() {
 }
 
 #[test]
-fn dict_new() {
-    //struct Dictionary { map: HashMap<char, Vec<String>> }
-    let d = Dictionary::new();
-
-    // all keys present, with empty vectors
-    for i in 0_u8..26 {
-        let key = (b'a' + i) as char;
-        let val = d.map.get(&key);
-        assert!(val.is_some());
-        assert!(val.unwrap().is_empty())
-    }
-}
-
-#[test]
 fn dict_match() {
     // test iterate dictionary match
     // e.g. [foo, bar, absent] yields 'absent'
 
-    let mut d = Dictionary::new();
-    d.map.get_mut(&'s').unwrap().push(String::from("spelunker"));
-
-    let dict = Arc::new(d);
+    let mut map = HashMap::new();
+    map.insert('s', vec!["spelunker".to_string()]);
+    let dict = Dictionary::new(map);
 
     let mut words = vec![
         "foo".to_string(),

@@ -30,8 +30,9 @@ pub struct Latin {
 
 /// Type for building an in-memory dictionary mapping ascii char to a vector of english words
 // e.g. {'a': ['absent',], ..., 'z': []}
+#[derive(Debug, Clone)]
 pub struct Dictionary {
-    map: HashMap<char, Vec<String>>,
+    inner: Arc<HashMap<char, Vec<String>>>,
 }
 
 /// My errors
@@ -43,17 +44,17 @@ pub enum Error {
 }
 
 impl Dictionary {
-    /// Creates a new empty dictionary containing a map of words keyed by a single char in [a-z]
-    fn new() -> Self {
-        let mut map = HashMap::new();
-
-        // initialize all keys/values
-        for i in 0_u8..26 {
-            let key = (b'a' + i) as char;
-            let val: Vec<String> = vec![];
-            map.insert(key, val);
+    /// Creates a `Dictionary` from the given `map`
+    fn new(map: HashMap<char, Vec<String>>) -> Self {
+        Self {
+            inner: Arc::new(map),
         }
-        Dictionary { map }
+    }
+
+    /// Returns a reference to the value corresponding to the given `key`
+    /// if it exists, else `None`
+    fn get(&self, key: &char) -> Option<&Vec<String>> {
+        self.inner.get(key)
     }
 }
 
@@ -88,11 +89,11 @@ async fn main() -> Result<(), Error> {
     let db_url = env!("DATABASE_URL");
     let db: PgPool = PgPoolOptions::new()
         .max_connections(10)
-        .connect(&db_url)
+        .connect(db_url)
         .await?;
 
     // Load dictionary into memory
-    let mut d = Dictionary::new();
+    let mut map = HashMap::<char, Vec<String>>::new();
     let rows = sqlx::query_as!(Latin, "select * from latin")
         .fetch_all(&db)
         .await?;
@@ -101,13 +102,12 @@ async fn main() -> Result<(), Error> {
     for row in rows {
         let en = row.en;
         let key = en.chars().next().expect("char is some");
-        d.map.get_mut(&key).expect("key exist").push(en);
+        map.entry(key).and_modify(|v| v.push(en)).or_insert(vec![]);
         count += 1;
     }
     log::info!("Loaded {count} dictionary entries");
 
-    //TODO move this to `Dictionary::new` ?
-    let dict = Arc::new(d);
+    let dict = Dictionary::new(map);
 
     Command::repl(bot, move |bot, msg, cmd| {
         respond(bot, msg, cmd, dl.clone(), db.clone(), dict.clone())
@@ -141,7 +141,7 @@ async fn respond(
     cmd: Command,
     dl: DeepLApi,
     db: PgPool,
-    dict: Arc<Dictionary>,
+    dict: Dictionary,
 ) -> ResponseResult<()> {
     if !is_authorized(&msg) {
         return Ok(());
@@ -203,7 +203,7 @@ async fn respond(
         // Translate text
         Command::T => {
             let text = msg.text().expect("msg text");
-            
+
             let reply = match parse_translatable(text) {
                 Err(e) => e.to_string(),
                 Ok((src, trg, s)) => {

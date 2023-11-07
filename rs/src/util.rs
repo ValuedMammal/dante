@@ -3,7 +3,6 @@ use deepl::Lang;
 use lazy_static::lazy_static;
 use regex::Regex;
 use sqlx::PgPool;
-use std::sync::Arc;
 
 // Load regex patterns
 lazy_static!(
@@ -19,15 +18,17 @@ lazy_static!(
 );
 
 /// Returns a reference to the first matching entry in `dict` if it exists, else `None`
-pub fn try_from_dictionary(words: &[String], dict: Arc<Dictionary>) -> Option<&str> {
+pub fn try_from_dictionary(words: &[String], dict: Dictionary) -> Option<&str> {
     if words.is_empty() {
         return None;
     }
 
     for word in words {
         let key = word.chars().next().expect("char is some");
-        if dict.map.get(&key).expect("key exist").contains(word) {
-            return Some(word);
+        if let Some(v) = dict.get(&key) {
+            if v.contains(word) {
+                return Some(word);
+            }
         }
     }
     None
